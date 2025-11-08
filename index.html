@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub Óbito - Controle de Pagamentos</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --light-text: #fff;
+            --border-color: #ddd;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        }
+
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            max-width: 200px;
+            margin: 0 auto 1.5rem;
+            display: block;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* Main App */
+        .app-container {
+            display: none;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-logo {
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: opacity 0.3s;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            opacity: 0.8;
+            border-bottom: 2px solid var(--light-text);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Quadra Info */
+        .quadra-info {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .quadra-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .quadra-title {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .quadra-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .quadra-detail {
+            text-align: center;
+        }
+
+        .quadra-detail h4 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .quadra-detail .value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Summary Cards */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Forms */
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .btn-warning:hover {
+            background-color: #f57c00;
+        }
+
+        .status-paid {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .status-unpaid {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        .status-confirmed {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .status-pending {
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+
+        /* Checkboxes */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: auto;
+        }
+
+        /* Messages */
+        .message {
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .message-success {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            border: 1px solid #c8e6c9;
+        }
+
+        .message-error {
+            background-color: #ffebee;
+            color: var(--danger-color);
+            border: 1px solid #ffcdd2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                justify-content: center;
+            }
+
+            .nav-menu li {
+                margin: 0 0.75rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-form">
+            <svg class="login-logo" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="180" height="40" rx="5" fill="#2e7d32" stroke="#1b5e20" stroke-width="2"/>
+                <text x="100" y="25" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">PELADINHA</text>
+                <text x="100" y="40" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">SUB OBITO</text>
+                <text x="100" y="52" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10">DESDE 2025</text>
+            </svg>
+            <h2>Sub Óbito - Login</h2>
+            <div class="form-group">
+                <label for="username">Usuário</label>
+                <input type="text" id="username" placeholder="Digite seu usuário">
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Digite sua senha">
+            </div>
+            <button class="btn btn-block" id="loginBtn">Entrar</button>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <!-- Header -->
+        <header class="header">
+            <div class="container header-content">
+                <div class="logo-container">
+                    <svg class="header-logo" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="5" width="110" height="30" rx="3" fill="white" stroke="#1b5e20" stroke-width="1"/>
+                        <text x="60" y="15" text-anchor="middle" fill="#2e7d32" font-family="Arial, sans-serif" font-size="8" font-weight="bold">PELADINHA</text>
+                        <text x="60" y="25" text-anchor="middle" fill="#2e7d32" font-family="Arial, sans-serif" font-size="10" font-weight="bold">SUB OBITO</text>
+                        <text x="60" y="33" text-anchor="middle" fill="#2e7d32" font-family="Arial, sans-serif" font-size="6">DESDE 2025</text>
+                    </svg>
+                    <div class="logo-text">Sub Óbito</div>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#" class="nav-link active" data-section="dashboard">Painel Principal</a></li>
+                    <li><a href="#" class="nav-link" data-section="caixa">Caixa</a></li>
+                    <li><a href="#" id="logoutBtn">Sair</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Dashboard Section -->
+                <section class="section active" id="dashboard">
+                    <div class="section-header">
+                        <h2 class="section-title">Painel Principal</h2>
+                        <div>
+                            <button class="btn" id="resetPaymentsBtn">Resetar Pagamentos</button>
+                            <button class="btn" id="refreshDataBtn">🔄 Atualizar Dados</button>
+                        </div>
+                    </div>
+
+                    <!-- Quadra Info -->
+                    <div class="quadra-info">
+                        <div class="quadra-header">
+                            <h3 class="quadra-title">Quadra da Semana</h3>
+                            <button class="btn btn-small" id="editQuadraBtn">Editar</button>
+                        </div>
+                        <div class="quadra-details">
+                            <div class="quadra-detail">
+                                <h4>Local</h4>
+                                <div class="value" id="quadraLocal">Quadra Municipal</div>
+                            </div>
+                            <div class="quadra-detail">
+                                <h4>Valor da Reserva</h4>
+                                <div class="value" id="quadraValor">R$ 180,00</div>
+                            </div>
+                            <div class="quadra-detail">
+                                <h4>Duração</h4>
+                                <div class="value" id="quadraDuracao">2 horas</div>
+                            </div>
+                            <div class="quadra-detail">
+                                <h4>Valor por Mensalista</h4>
+                                <div class="value" id="valorMensalista">R$ 15,00</div>
+                            </div>
+                            <div class="quadra-detail">
+                                <h4>Valor Avulso</h4>
+                                <div class="value" id="valorAvulso">R$ 20,00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <h3>Total de Jogadores</h3>
+                            <div class="value" id="totalPlayers">0</div>
+                        </div>
+                        <div class="summary-card">
+                            <h3>Mensalistas</h3>
+                            <div class="value" id="mensalistas">0</div>
+                        </div>
+                        <div class="summary-card">
+                            <h3>Avulsos</h3>
+                            <div class="value" id="avulsos">0</div>
+                        </div>
+                        <div class="summary-card">
+                            <h3>Pagamentos em Dia</h3>
+                            <div class="value" id="paidPlayers">0</div>
+                        </div>
+                        <div class="summary-card">
+                            <h3>Confirmados</h3>
+                            <div class="value" id="confirmedPlayers">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Add Player Form -->
+                    <div class="table-container">
+                        <div style="padding: 1rem;">
+                            <h3 style="margin-bottom: 1rem;">Adicionar Jogador</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="playerName">Nome</label>
+                                    <input type="text" id="playerName" placeholder="Nome ou apelido">
+                                </div>
+                                <div class="form-group">
+                                    <label for="playerType">Tipo</label>
+                                    <select id="playerType">
+                                        <option value="Mensalista">Mensalista</option>
+                                        <option value="Avulso">Avulso</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: flex-end;">
+                                    <button class="btn btn-block" id="addPlayerBtn">Adicionar Jogador</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Players Table -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Tipo</th>
+                                    <th>Valor</th>
+                                    <th>Pago</th>
+                                    <th>Confirmado</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="playersTableBody">
+                                <!-- Players will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Caixa Section -->
+                <section class="section" id="caixa">
+                    <div class="section-header">
+                        <h2 class="section-title">Caixa</h2>
+                        <button class="btn" id="refreshCaixaBtn">🔄 Atualizar</button>
+                    </div>
+
+                    <!-- Add Item Form -->
+                    <div class="table-container">
+                        <div style="padding: 1rem;">
+                            <h3 style="margin-bottom: 1rem;">Adicionar Item</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="itemName">Nome do Item</label>
+                                    <input type="text" id="itemName" placeholder="Ex: Bola, Coletes, Redes...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="itemValue">Valor (R$)</label>
+                                    <input type="number" id="itemValue" placeholder="0.00" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="itemStatus">Status</label>
+                                    <select id="itemStatus">
+                                        <option value="A comprar">A comprar</option>
+                                        <option value="Comprado">Comprado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: flex-end;">
+                                    <button class="btn btn-block" id="addItemBtn">Adicionar Item</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Items Table -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Valor (R$)</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemsTableBody">
+                                <!-- Items will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Configuration
+        const BIN_ID = '690f96e7d0ea881f40dc3768';
+        const MASTER_KEY = '$2a$10$AKM30q2AE/6WJhXqS2dft.8Luvw0h6GHLQWhtcUBQc12SCGK3oRra';
+        const API_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
+        // Application State
+        let players = [];
+        let items = [];
+        let quadraInfo = {
+            local: "Quadra Municipal",
+            valor: 180,
+            duracao: "2 horas",
+            valorAvulso: 20
+        };
+
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const appContainer = document.getElementById('appContainer');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
+        const addPlayerBtn = document.getElementById('addPlayerBtn');
+        const resetPaymentsBtn = document.getElementById('resetPaymentsBtn');
+        const refreshDataBtn = document.getElementById('refreshDataBtn');
+        const addItemBtn = document.getElementById('addItemBtn');
+        const refreshCaixaBtn = document.getElementById('refreshCaixaBtn');
+        const editQuadraBtn = document.getElementById('editQuadraBtn');
+
+        // Login Credentials (hardcoded as requested)
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'subobito2024';
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                showApp();
+                loadData();
+            }
+
+            // Login button
+            loginBtn.addEventListener('click', handleLogin);
+
+            // Logout button
+            logoutBtn.addEventListener('click', handleLogout);
+
+            // Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    showSection(sectionId);
+                    
+                    // Update active nav link
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Dashboard actions
+            addPlayerBtn.addEventListener('click', addPlayer);
+            resetPaymentsBtn.addEventListener('click', resetPayments);
+            refreshDataBtn.addEventListener('click', loadData);
+            editQuadraBtn.addEventListener('click', editQuadraInfo);
+
+            // Caixa actions
+            addItemBtn.addEventListener('click', addItem);
+            refreshCaixaBtn.addEventListener('click', loadData);
+        });
+
+        // Functions
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                localStorage.setItem('isLoggedIn', 'true');
+                showApp();
+                loadData();
+                showMessage('Login realizado com sucesso!', 'success');
+            } else {
+                showMessage('Usuário ou senha incorretos!', 'error');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            showLogin();
+        }
+
+        function showLogin() {
+            loginScreen.style.display = 'flex';
+            appContainer.style.display = 'none';
+        }
+
+        function showApp() {
+            loginScreen.style.display = 'none';
+            appContainer.style.display = 'block';
+        }
+
+        function showSection(sectionId) {
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch(API_URL + '/latest', {
+                    headers: {
+                        'X-Master-Key': MASTER_KEY
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar dados');
+                }
+
+                const data = await response.json();
+                players = data.record.players || [];
+                items = data.record.items || [];
+                quadraInfo = data.record.quadraInfo || quadraInfo;
+
+                updateDashboard();
+                updateQuadraInfo();
+                updatePlayersTable();
+                updateItemsTable();
+                showMessage('Dados atualizados com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                showMessage('Erro ao carregar dados. Verifique sua conexão.', 'error');
+            }
+        }
+
+        async function saveData() {
+            try {
+                const data = {
+                    players: players,
+                    items: items,
+                    quadraInfo: quadraInfo
+                };
+
+                const response = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao salvar dados');
+                }
+
+                showMessage('Dados salvos com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao salvar dados:', error);
+                showMessage('Erro ao salvar dados. Verifique sua conexão.', 'error');
+            }
+        }
+
+        function updateQuadraInfo() {
+            document.getElementById('quadraLocal').textContent = quadraInfo.local;
+            document.getElementById('quadraValor').textContent = `R$ ${quadraInfo.valor.toFixed(2).replace('.', ',')}`;
+            document.getElementById('quadraDuracao').textContent = quadraInfo.duracao;
+            document.getElementById('valorAvulso').textContent = `R$ ${quadraInfo.valorAvulso.toFixed(2).replace('.', ',')}`;
+            
+            // Calcular valor por mensalista
+            const mensalistasCount = players.filter(p => p.type === 'Mensalista').length;
+            const valorMensalista = mensalistasCount > 0 ? 
+                (quadraInfo.valor - (players.filter(p => p.type === 'Avulso' && p.paid).length * quadraInfo.valorAvulso)) / mensalistasCount : 0;
+            
+            document.getElementById('valorMensalista').textContent = `R$ ${Math.max(0, valorMensalista).toFixed(2).replace('.', ',')}`;
+        }
+
+        function updateDashboard() {
+            const totalPlayers = players.length;
+            const mensalistas = players.filter(p => p.type === 'Mensalista').length;
+            const avulsos = players.filter(p => p.type === 'Avulso').length;
+            const paidPlayers = players.filter(p => p.paid).length;
+            const confirmedPlayers = players.filter(p => p.confirmed).length;
+
+            document.getElementById('totalPlayers').textContent = totalPlayers;
+            document.getElementById('mensalistas').textContent = mensalistas;
+            document.getElementById('avulsos').textContent = avulsos;
+            document.getElementById('paidPlayers').textContent = paidPlayers;
+            document.getElementById('confirmedPlayers').textContent = confirmedPlayers;
+
+            // Atualizar também o valor dos mensalistas
+            updateQuadraInfo();
+        }
+
+        function updatePlayersTable() {
+            const tableBody = document.getElementById('playersTableBody');
+            tableBody.innerHTML = '';
+
+            players.forEach((player, index) => {
+                const row = document.createElement('tr');
+                const valorJogador = player.type === 'Avulso' ? 
+                    `R$ ${quadraInfo.valorAvulso.toFixed(2).replace('.', ',')}` : 
+                    'A calcular';
+                
+                row.innerHTML = `
+                    <td>${player.name}</td>
+                    <td>${player.type}</td>
+                    <td>${valorJogador}</td>
+                    <td>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="paid-${index}" ${player.paid ? 'checked' : ''}>
+                            <label for="paid-${index}" class="${player.paid ? 'status-paid' : 'status-unpaid'}">
+                                ${player.paid ? 'Pago' : 'Em aberto'}
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="confirmed-${index}" ${player.confirmed ? 'checked' : ''}>
+                            <label for="confirmed-${index}" class="${player.confirmed ? 'status-confirmed' : 'status-pending'}">
+                                ${player.confirmed ? 'Confirmado' : 'Pendente'}
+                            </label>
+                        </div>
+                    </td>
+                    <td class="actions">
+                        <button class="btn btn-small btn-danger" onclick="deletePlayer(${index})">Excluir</button>
+                    </td>
+                `;
+
+                // Add event listeners for checkboxes
+                const paidCheckbox = row.querySelector(`#paid-${index}`);
+                const confirmedCheckbox = row.querySelector(`#confirmed-${index}`);
+
+                paidCheckbox.addEventListener('change', function() {
+                    players[index].paid = this.checked;
+                    saveData();
+                    updateDashboard();
+                    updatePlayersTable();
+                });
+
+                confirmedCheckbox.addEventListener('change', function() {
+                    players[index].confirmed = this.checked;
+                    saveData();
+                    updateDashboard();
+                    updatePlayersTable();
+                });
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updateItemsTable() {
+            const tableBody = document.getElementById('itemsTableBody');
+            tableBody.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>R$ ${parseFloat(item.value).toFixed(2).replace('.', ',')}</td>
+                    <td>
+                        <span class="${item.status === 'Comprado' ? 'status-paid' : 'status-pending'}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="actions">
+                        <button class="btn btn-small" onclick="editItem(${index})">Editar</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteItem(${index})">Excluir</button>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function editQuadraInfo() {
+            const novoLocal = prompt('Local da quadra:', quadraInfo.local);
+            if (novoLocal === null) return;
+            
+            const novoValor = prompt('Valor da reserva (R$):', quadraInfo.valor);
+            if (novoValor === null) return;
+            
+            const novaDuracao = prompt('Duração:', quadraInfo.duracao);
+            if (novaDuracao === null) return;
+            
+            const novoValorAvulso = prompt('Valor para avulsos (R$):', quadraInfo.valorAvulso);
+            if (novoValorAvulso === null) return;
+
+            if (novoLocal && novoValor && novaDuracao && novoValorAvulso) {
+                quadraInfo.local = novoLocal;
+                quadraInfo.valor = parseFloat(novoValor);
+                quadraInfo.duracao = novaDuracao;
+                quadraInfo.valorAvulso = parseFloat(novoValorAvulso);
+                
+                saveData();
+                updateQuadraInfo();
+                updatePlayersTable();
+                showMessage('Informações da quadra atualizadas!', 'success');
+            }
+        }
+
+        function addPlayer() {
+            const nameInput = document.getElementById('playerName');
+            const typeSelect = document.getElementById('playerType');
+
+            const name = nameInput.value.trim();
+            const type = typeSelect.value;
+
+            if (!name) {
+                showMessage('Por favor, insira um nome para o jogador.', 'error');
+                return;
+            }
+
+            const newPlayer = {
+                name: name,
+                type: type,
+                paid: false,
+                confirmed: false
+            };
+
+            players.push(newPlayer);
+            saveData();
+            updateDashboard();
+            updatePlayersTable();
+
+            // Reset form
+            nameInput.value = '';
+            typeSelect.value = 'Mensalista';
+
+            showMessage('Jogador adicionado com sucesso!', 'success');
+        }
+
+        function deletePlayer(index) {
+            if (confirm('Tem certeza que deseja excluir este jogador?')) {
+                players.splice(index, 1);
+                saveData();
+                updateDashboard();
+                updatePlayersTable();
+                showMessage('Jogador excluído com sucesso!', 'success');
+            }
+        }
+
+        function resetPayments() {
+            if (confirm('Tem certeza que deseja resetar todos os pagamentos? Esta ação não pode ser desfeita.')) {
+                players.forEach(player => {
+                    player.paid = false;
+                });
+                saveData();
+                updateDashboard();
+                updatePlayersTable();
+                showMessage('Pagamentos resetados com sucesso!', 'success');
+            }
+        }
+
+        function addItem() {
+            const nameInput = document.getElementById('itemName');
+            const valueInput = document.getElementById('itemValue');
+            const statusSelect = document.getElementById('itemStatus');
+
+            const name = nameInput.value.trim();
+            const value = parseFloat(valueInput.value);
+            const status = statusSelect.value;
+
+            if (!name) {
+                showMessage('Por favor, insira um nome para o item.', 'error');
+                return;
+            }
+
+            if (isNaN(value) || value <= 0) {
+                showMessage('Por favor, insira um valor válido para o item.', 'error');
+                return;
+            }
+
+            const newItem = {
+                name: name,
+                value: value,
+                status: status
+            };
+
+            items.push(newItem);
+            saveData();
+            updateItemsTable();
+
+            // Reset form
+            nameInput.value = '';
+            valueInput.value = '';
+            statusSelect.value = 'A comprar';
+
+            showMessage('Item adicionado com sucesso!', 'success');
+        }
+
+        function editItem(index) {
+            const item = items[index];
+            
+            const newName = prompt('Editar nome do item:', item.name);
+            if (newName === null) return;
+            
+            const newValue = prompt('Editar valor do item:', item.value);
+            if (newValue === null) return;
+            
+            const newStatus = prompt('Editar status (A comprar/Comprado):', item.status);
+            if (newStatus === null) return;
+
+            if (newName && newValue && newStatus) {
+                items[index].name = newName;
+                items[index].value = parseFloat(newValue);
+                items[index].status = newStatus;
+                
+                saveData();
+                updateItemsTable();
+                showMessage('Item atualizado com sucesso!', 'success');
+            }
+        }
+
+        function deleteItem(index) {
+            if (confirm('Tem certeza que deseja excluir este item?')) {
+                items.splice(index, 1);
+                saveData();
+                updateItemsTable();
+                showMessage('Item excluído com sucesso!', 'success');
+            }
+        }
+
+        function showMessage(message, type) {
+            // Remove existing messages
+            const existingMessages = document.querySelectorAll('.message');
+            existingMessages.forEach(msg => msg.remove());
+
+            // Create new message
+            const messageEl = document.createElement('div');
+            messageEl.className = `message message-${type}`;
+            messageEl.textContent = message;
+
+            // Insert message at the top of the main content
+            const mainContent = document.querySelector('.main-content .container');
+            mainContent.insertBefore(messageEl, mainContent.firstChild);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (messageEl.parentNode) {
+                    messageEl.remove();
+                }
+            }, 5000);
+        }
+
+        // Make functions available globally for onclick handlers
+        window.deletePlayer = deletePlayer;
+        window.editItem = editItem;
+        window.deleteItem = deleteItem;
+    </script>
+</body>
+</html>
