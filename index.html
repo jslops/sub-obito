@@ -78,7 +78,7 @@
             font-weight: 500;
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid var(--border-color);
@@ -190,6 +190,24 @@
             color: var(--primary-color);
         }
 
+        /* Month Filter */
+        .month-filter {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .month-filter label {
+            font-weight: 500;
+        }
+
+        .month-filter select {
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
         /* Quadra Info */
         .quadra-info {
             background: white;
@@ -260,6 +278,139 @@
             font-size: 2rem;
             font-weight: bold;
             color: var(--primary-color);
+        }
+
+        /* Financial Report */
+        .financial-report {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .report-title {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .report-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .report-card {
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .report-card h4 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-card .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .report-card.total-received {
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .report-card.total-received .value {
+            color: var(--success-color);
+        }
+
+        .report-card.remaining {
+            background-color: #fff3e0;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .report-card.remaining .value {
+            color: var(--warning-color);
+        }
+
+        .report-card.avulso {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+
+        .report-card.avulso .value {
+            color: #2196f3;
+        }
+
+        .report-card.mensalista {
+            background-color: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+        }
+
+        .report-card.mensalista .value {
+            color: #9c27b0;
+        }
+
+        /* Caixa Info */
+        .caixa-info {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .caixa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .caixa-title {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .caixa-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .caixa-detail {
+            text-align: center;
+        }
+
+        .caixa-detail h4 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .caixa-detail .value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .caixa-detail .value.positive {
+            color: var(--success-color);
+        }
+
+        .caixa-detail .value.negative {
+            color: var(--danger-color);
         }
 
         /* Forms */
@@ -463,6 +614,25 @@
                         </div>
                     </div>
 
+                    <!-- Month Filter -->
+                    <div class="month-filter">
+                        <label for="monthFilter">Filtrar por mês:</label>
+                        <select id="monthFilter">
+                            <option value="2025-01">Janeiro 2025</option>
+                            <option value="2025-02">Fevereiro 2025</option>
+                            <option value="2025-03">Março 2025</option>
+                            <option value="2025-04">Abril 2025</option>
+                            <option value="2025-05">Maio 2025</option>
+                            <option value="2025-06">Junho 2025</option>
+                            <option value="2025-07">Julho 2025</option>
+                            <option value="2025-08">Agosto 2025</option>
+                            <option value="2025-09">Setembro 2025</option>
+                            <option value="2025-10">Outubro 2025</option>
+                            <option value="2025-11">Novembro 2025</option>
+                            <option value="2025-12">Dezembro 2025</option>
+                        </select>
+                    </div>
+
                     <!-- Quadra Info -->
                     <div class="quadra-info">
                         <div class="quadra-header">
@@ -489,6 +659,31 @@
                             <div class="quadra-detail">
                                 <h4>Valor Avulso</h4>
                                 <div class="value" id="valorAvulso">R$ 20,00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Report -->
+                    <div class="financial-report">
+                        <div class="report-header">
+                            <h3 class="report-title">Relatório Financeiro</h3>
+                        </div>
+                        <div class="report-cards">
+                            <div class="report-card total-received">
+                                <h4>Total Arrecadado</h4>
+                                <div class="value" id="totalArrecadado">R$ 0,00</div>
+                            </div>
+                            <div class="report-card remaining">
+                                <h4>Falta Arrecadar</h4>
+                                <div class="value" id="faltaArrecadar">R$ 180,00</div>
+                            </div>
+                            <div class="report-card avulso">
+                                <h4>Avulsos Pagos</h4>
+                                <div class="value" id="avulsosPagos">R$ 0,00</div>
+                            </div>
+                            <div class="report-card mensalista">
+                                <h4>Mensalistas Pagos</h4>
+                                <div class="value" id="mensalistasPagos">R$ 0,00</div>
                             </div>
                         </div>
                     </div>
@@ -567,6 +762,27 @@
                         <button class="btn" id="refreshCaixaBtn">🔄 Atualizar</button>
                     </div>
 
+                    <!-- Caixa Info -->
+                    <div class="caixa-info">
+                        <div class="caixa-header">
+                            <h3 class="caixa-title">Saldo em Caixa</h3>
+                        </div>
+                        <div class="caixa-details">
+                            <div class="caixa-detail">
+                                <h4>Valor em Caixa</h4>
+                                <div class="value" id="valorCaixa">R$ 0,00</div>
+                            </div>
+                            <div class="caixa-detail">
+                                <h4>Total de Itens Comprados</h4>
+                                <div class="value" id="totalItensComprados">R$ 0,00</div>
+                            </div>
+                            <div class="caixa-detail">
+                                <h4>Saldo Final</h4>
+                                <div class="value" id="saldoFinal">R$ 0,00</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Add Item Form -->
                     <div class="table-container">
                         <div style="padding: 1rem;">
@@ -628,7 +844,8 @@
             local: "Quadra Municipal",
             valor: 180,
             duracao: "2 horas",
-            valorAvulso: 20
+            valorAvulso: 20,
+            valorMensalista: 15  // Novo campo para valor fixo dos mensalistas
         };
 
         // DOM Elements
@@ -644,6 +861,7 @@
         const addItemBtn = document.getElementById('addItemBtn');
         const refreshCaixaBtn = document.getElementById('refreshCaixaBtn');
         const editQuadraBtn = document.getElementById('editQuadraBtn');
+        const monthFilter = document.getElementById('monthFilter');
 
         // Login Credentials (hardcoded as requested)
         const ADMIN_USERNAME = 'admin';
@@ -686,6 +904,13 @@
             // Caixa actions
             addItemBtn.addEventListener('click', addItem);
             refreshCaixaBtn.addEventListener('click', loadData);
+
+            // Month filter
+            monthFilter.addEventListener('change', function() {
+                updateDashboard();
+                updateFinancialReport();
+                updateCaixaInfo();
+            });
         });
 
         // Functions
@@ -746,6 +971,8 @@
                 updateQuadraInfo();
                 updatePlayersTable();
                 updateItemsTable();
+                updateFinancialReport();
+                updateCaixaInfo();
                 showMessage('Dados atualizados com sucesso!', 'success');
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
@@ -786,41 +1013,89 @@
             document.getElementById('quadraValor').textContent = `R$ ${quadraInfo.valor.toFixed(2).replace('.', ',')}`;
             document.getElementById('quadraDuracao').textContent = quadraInfo.duracao;
             document.getElementById('valorAvulso').textContent = `R$ ${quadraInfo.valorAvulso.toFixed(2).replace('.', ',')}`;
-            
-            // Calcular valor por mensalista
-            const mensalistasCount = players.filter(p => p.type === 'Mensalista').length;
-            const valorMensalista = mensalistasCount > 0 ? 
-                (quadraInfo.valor - (players.filter(p => p.type === 'Avulso' && p.paid).length * quadraInfo.valorAvulso)) / mensalistasCount : 0;
-            
-            document.getElementById('valorMensalista').textContent = `R$ ${Math.max(0, valorMensalista).toFixed(2).replace('.', ',')}`;
+            document.getElementById('valorMensalista').textContent = `R$ ${quadraInfo.valorMensalista.toFixed(2).replace('.', ',')}`;
         }
 
         function updateDashboard() {
-            const totalPlayers = players.length;
-            const mensalistas = players.filter(p => p.type === 'Mensalista').length;
-            const avulsos = players.filter(p => p.type === 'Avulso').length;
-            const paidPlayers = players.filter(p => p.paid).length;
-            const confirmedPlayers = players.filter(p => p.confirmed).length;
+            const currentMonth = monthFilter.value;
+            const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
+            
+            const totalPlayers = monthPlayers.length;
+            const mensalistas = monthPlayers.filter(p => p.type === 'Mensalista').length;
+            const avulsos = monthPlayers.filter(p => p.type === 'Avulso').length;
+            const paidPlayers = monthPlayers.filter(p => p.paid).length;
+            const confirmedPlayers = monthPlayers.filter(p => p.confirmed).length;
 
             document.getElementById('totalPlayers').textContent = totalPlayers;
             document.getElementById('mensalistas').textContent = mensalistas;
             document.getElementById('avulsos').textContent = avulsos;
             document.getElementById('paidPlayers').textContent = paidPlayers;
             document.getElementById('confirmedPlayers').textContent = confirmedPlayers;
+        }
 
-            // Atualizar também o valor dos mensalistas
-            updateQuadraInfo();
+        function updateFinancialReport() {
+            const currentMonth = monthFilter.value;
+            const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
+            
+            // Calcular valores arrecadados
+            const avulsosPagos = monthPlayers.filter(p => p.type === 'Avulso' && p.paid);
+            const mensalistasPagos = monthPlayers.filter(p => p.type === 'Mensalista' && p.paid);
+            
+            const totalAvulsos = avulsosPagos.length * quadraInfo.valorAvulso;
+            const totalMensalistas = mensalistasPagos.length * quadraInfo.valorMensalista;
+            const totalArrecadado = totalAvulsos + totalMensalistas;
+            const faltaArrecadar = Math.max(0, quadraInfo.valor - totalArrecadado);
+
+            // Atualizar a interface
+            document.getElementById('totalArrecadado').textContent = `R$ ${totalArrecadado.toFixed(2).replace('.', ',')}`;
+            document.getElementById('faltaArrecadar').textContent = `R$ ${faltaArrecadar.toFixed(2).replace('.', ',')}`;
+            document.getElementById('avulsosPagos').textContent = `R$ ${totalAvulsos.toFixed(2).replace('.', ',')}`;
+            document.getElementById('mensalistasPagos').textContent = `R$ ${totalMensalistas.toFixed(2).replace('.', ',')}`;
+        }
+
+        function updateCaixaInfo() {
+            // Calcular o valor em caixa (excedente arrecadado)
+            const currentMonth = monthFilter.value;
+            const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
+            
+            const avulsosPagos = monthPlayers.filter(p => p.type === 'Avulso' && p.paid);
+            const mensalistasPagos = monthPlayers.filter(p => p.type === 'Mensalista' && p.paid);
+            
+            const totalAvulsos = avulsosPagos.length * quadraInfo.valorAvulso;
+            const totalMensalistas = mensalistasPagos.length * quadraInfo.valorMensalista;
+            const totalArrecadado = totalAvulsos + totalMensalistas;
+            
+            // Valor em caixa é o excedente arrecadado
+            const valorCaixa = Math.max(0, totalArrecadado - quadraInfo.valor);
+            
+            // Calcular total de itens comprados
+            const itensComprados = items.filter(item => item.status === 'Comprado');
+            const totalItensComprados = itensComprados.reduce((total, item) => total + parseFloat(item.value), 0);
+            
+            // Saldo final (valor em caixa - itens comprados)
+            const saldoFinal = valorCaixa - totalItensComprados;
+            
+            // Atualizar a interface
+            document.getElementById('valorCaixa').textContent = `R$ ${valorCaixa.toFixed(2).replace('.', ',')}`;
+            document.getElementById('totalItensComprados').textContent = `R$ ${totalItensComprados.toFixed(2).replace('.', ',')}`;
+            
+            const saldoFinalElement = document.getElementById('saldoFinal');
+            saldoFinalElement.textContent = `R$ ${saldoFinal.toFixed(2).replace('.', ',')}`;
+            saldoFinalElement.className = saldoFinal >= 0 ? 'value positive' : 'value negative';
         }
 
         function updatePlayersTable() {
             const tableBody = document.getElementById('playersTableBody');
             tableBody.innerHTML = '';
 
-            players.forEach((player, index) => {
+            const currentMonth = monthFilter.value;
+            const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
+
+            monthPlayers.forEach((player, index) => {
                 const row = document.createElement('tr');
                 const valorJogador = player.type === 'Avulso' ? 
                     `R$ ${quadraInfo.valorAvulso.toFixed(2).replace('.', ',')}` : 
-                    'A calcular';
+                    `R$ ${quadraInfo.valorMensalista.toFixed(2).replace('.', ',')}`;
                 
                 row.innerHTML = `
                     <td>${player.name}</td>
@@ -856,6 +1131,8 @@
                     saveData();
                     updateDashboard();
                     updatePlayersTable();
+                    updateFinancialReport();
+                    updateCaixaInfo();
                 });
 
                 confirmedCheckbox.addEventListener('change', function() {
@@ -906,16 +1183,22 @@
             
             const novoValorAvulso = prompt('Valor para avulsos (R$):', quadraInfo.valorAvulso);
             if (novoValorAvulso === null) return;
+            
+            const novoValorMensalista = prompt('Valor para mensalistas (R$):', quadraInfo.valorMensalista);
+            if (novoValorMensalista === null) return;
 
-            if (novoLocal && novoValor && novaDuracao && novoValorAvulso) {
+            if (novoLocal && novoValor && novaDuracao && novoValorAvulso && novoValorMensalista) {
                 quadraInfo.local = novoLocal;
                 quadraInfo.valor = parseFloat(novoValor);
                 quadraInfo.duracao = novaDuracao;
                 quadraInfo.valorAvulso = parseFloat(novoValorAvulso);
+                quadraInfo.valorMensalista = parseFloat(novoValorMensalista);
                 
                 saveData();
                 updateQuadraInfo();
                 updatePlayersTable();
+                updateFinancialReport();
+                updateCaixaInfo();
                 showMessage('Informações da quadra atualizadas!', 'success');
             }
         }
@@ -926,6 +1209,7 @@
 
             const name = nameInput.value.trim();
             const type = typeSelect.value;
+            const currentMonth = monthFilter.value;
 
             if (!name) {
                 showMessage('Por favor, insira um nome para o jogador.', 'error');
@@ -936,13 +1220,16 @@
                 name: name,
                 type: type,
                 paid: false,
-                confirmed: false
+                confirmed: false,
+                month: currentMonth  // Adiciona o mês atual ao jogador
             };
 
             players.push(newPlayer);
             saveData();
             updateDashboard();
             updatePlayersTable();
+            updateFinancialReport();
+            updateCaixaInfo();
 
             // Reset form
             nameInput.value = '';
@@ -957,18 +1244,26 @@
                 saveData();
                 updateDashboard();
                 updatePlayersTable();
+                updateFinancialReport();
+                updateCaixaInfo();
                 showMessage('Jogador excluído com sucesso!', 'success');
             }
         }
 
         function resetPayments() {
-            if (confirm('Tem certeza que deseja resetar todos os pagamentos? Esta ação não pode ser desfeita.')) {
+            const currentMonth = monthFilter.value;
+            
+            if (confirm('Tem certeza que deseja resetar todos os pagamentos deste mês? Esta ação não pode ser desfeita.')) {
                 players.forEach(player => {
-                    player.paid = false;
+                    if (player.month === currentMonth || !player.month) {
+                        player.paid = false;
+                    }
                 });
                 saveData();
                 updateDashboard();
                 updatePlayersTable();
+                updateFinancialReport();
+                updateCaixaInfo();
                 showMessage('Pagamentos resetados com sucesso!', 'success');
             }
         }
@@ -1001,6 +1296,7 @@
             items.push(newItem);
             saveData();
             updateItemsTable();
+            updateCaixaInfo();
 
             // Reset form
             nameInput.value = '';
@@ -1029,6 +1325,7 @@
                 
                 saveData();
                 updateItemsTable();
+                updateCaixaInfo();
                 showMessage('Item atualizado com sucesso!', 'success');
             }
         }
@@ -1038,6 +1335,7 @@
                 items.splice(index, 1);
                 saveData();
                 updateItemsTable();
+                updateCaixaInfo();
                 showMessage('Item excluído com sucesso!', 'success');
             }
         }
