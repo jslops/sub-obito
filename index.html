@@ -1,557 +1,304 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sub Óbito - Controle de Pagamentos</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sub Óbito - Controle de Pagamentos (Atualizado)</title>
     <style>
         :root {
-            --primary-color: #2e7d32;
-            --primary-dark: #1b5e20;
-            --primary-light: #4caf50;
-            --secondary-color: #f5f5f5;
-            --text-color: #333;
-            --light-text: #fff;
-            --border-color: #ddd;
-            --success-color: #4caf50;
-            --warning-color: #ff9800;
-            --danger-color: #f44336;
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary-color: #f8fafc;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * { 
+            box-sizing: border-box; 
+            margin:0; 
+            padding:0; 
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
         }
-
-        body {
-            background-color: #f9f9f9;
-            color: var(--text-color);
-            line-height: 1.6;
+        body { 
+            background:#f1f5f9; 
+            color:var(--text-color); 
+            line-height:1.6; 
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
+        .container { 
+            max-width:1200px; 
+            margin:0 auto; 
+            padding:0 15px; 
         }
-
-        /* Login Screen */
-        .login-container {
-            display: flex;
-            justify-content: center;
+        .login-container{ 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            height:100vh; 
+            background:linear-gradient(135deg,var(--primary-color),var(--primary-dark)); 
+        }
+        .login-form{ 
+            background:white; 
+            padding:2.5rem; 
+            border-radius:12px; 
+            width:100%; 
+            max-width:400px; 
+            box-shadow:var(--card-shadow); 
+            text-align:center; 
+        }
+        .form-group{ 
+            margin-bottom:1.25rem; 
+            text-align:left; 
+        }
+        label{ 
+            display:block; 
+            margin-bottom:.5rem; 
+            font-weight:500; 
+            color: var(--text-light);
+        }
+        input, select{ 
+            width:100%; 
+            padding:.75rem; 
+            border:1px solid var(--border-color); 
+            border-radius:6px; 
+            font-size:1rem; 
+            transition: all 0.2s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .btn{ 
+            background:var(--primary-color); 
+            color:white; 
+            border:none; 
+            padding:.75rem 1.25rem; 
+            border-radius:6px; 
+            cursor:pointer; 
+            font-weight:500;
+            transition: all 0.2s ease;
+            display: inline-flex;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            gap: 0.5rem;
         }
-
-        .login-form {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
+        .btn:hover{ 
+            background:var(--primary-dark); 
+            transform: translateY(-1px);
+            box-shadow: var(--hover-shadow);
         }
-
-        .login-logo {
-            max-width: 200px;
-            margin: 0 auto 1.5rem;
-            display: block;
+        .btn-small{ 
+            padding:.4rem .8rem; 
+            font-size:.85rem; 
         }
-
-        .login-form h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
+        .btn-danger{ 
+            background:var(--danger-color); 
         }
-
-        .form-group {
-            margin-bottom: 1rem;
+        .btn-danger:hover {
+            background: #dc2626;
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+        .header{ 
+            background:var(--primary-color); 
+            color:white; 
+            padding:1rem 0; 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 1rem;
+        .header-content{ 
+            display:flex; 
+            justify-content:space-between; 
+            align-items:center; 
+            gap:1rem; 
         }
-
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: background-color 0.3s;
-            text-align: center;
+        .nav-menu{ 
+            display:flex; 
+            list-style:none; 
+            gap:1.5rem; 
         }
-
-        .btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-
-        /* Main App */
-        .app-container {
-            display: none;
-        }
-
-        /* Header */
-        .header {
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .header-logo {
-            height: 40px;
-        }
-
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-menu li {
-            margin-left: 1.5rem;
-        }
-
-        .nav-menu a {
-            color: var(--light-text);
-            text-decoration: none;
-            font-weight: 500;
+        .nav-link{ 
+            color:white; 
+            text-decoration:none; 
+            font-weight:500; 
             padding: 0.5rem 0;
-            transition: opacity 0.3s;
+            position: relative;
+            transition: all 0.2s ease;
         }
-
-        .nav-menu a:hover, .nav-menu a.active {
-            opacity: 0.8;
-            border-bottom: 2px solid var(--light-text);
+        .nav-link:hover {
+            opacity: 0.9;
         }
-
-        /* Main Content */
-        .main-content {
-            padding: 2rem 0;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        .section-header {
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        /* Month Filter */
-        .month-filter {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .month-filter label {
-            font-weight: 500;
-        }
-
-        .month-filter select {
-            padding: 0.5rem;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Quadra Info */
-        .quadra-info {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .quadra-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .quadra-title {
-            font-size: 1.25rem;
-            color: var(--primary-color);
+        .nav-link.active{ 
             font-weight: 600;
         }
-
-        .quadra-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
         }
-
-        .quadra-detail {
-            text-align: center;
+        .main-content{ 
+            padding:2rem 0; 
         }
-
-        .quadra-detail h4 {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.5rem;
+        .section{ 
+            display:none; 
         }
-
-        .quadra-detail .value {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--primary-color);
+        .section.active{ 
+            display:block; 
         }
-
-        /* Summary Cards */
+        .section-header{ 
+            display:flex; 
+            justify-content:space-between; 
+            align-items:center; 
+            margin-bottom:1.5rem; 
+            gap:1rem; 
+            flex-wrap:wrap; 
+        }
+        .quadra-info, .financial-report, .caixa-info, .table-container, .summary-cards .summary-card { 
+            background:white; 
+            padding:1.5rem; 
+            border-radius:12px; 
+            box-shadow:var(--card-shadow); 
+            margin-bottom:1.5rem; 
+            transition: all 0.2s ease;
+        }
+        .quadra-info:hover, .financial-report:hover, .caixa-info:hover, .table-container:hover, .summary-cards .summary-card:hover {
+            box-shadow: var(--hover-shadow);
+        }
+        .quadra-details, .caixa-details, .summary-cards { 
+            display:grid; 
+            gap:1.5rem; 
+            grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); 
+        }
+        table{ 
+            width:100%; 
+            border-collapse:collapse; 
+        }
+        th, td{ 
+            padding:.75rem; 
+            border-bottom:1px solid var(--border-color); 
+            text-align:left; 
+        }
+        th {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f8fafc;
+        }
+        .message{ 
+            padding:.75rem; 
+            border-radius:6px; 
+            margin-bottom:1rem; 
+            text-align:center; 
+        }
+        .message-success{ 
+            background:#ecfdf5; 
+            color:var(--success-color); 
+            border:1px solid #a7f3d0; 
+        }
+        .message-error{ 
+            background:#fef2f2; 
+            color:var(--danger-color); 
+            border:1px solid #fecaca; 
+        }
+        .pending-banner{ 
+            background:#fffbeb; 
+            border:1px solid #fed7aa; 
+            padding:1rem; 
+            border-radius:6px; 
+            display:flex; 
+            justify-content:space-between; 
+            align-items:center; 
+            gap:1rem; 
+            margin-bottom:1rem; 
+        }
         .summary-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
         }
-
         .summary-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.2s ease;
         }
-
-        .summary-card h3 {
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--hover-shadow);
+        }
+        .summary-card h4 {
             font-size: 0.9rem;
-            color: #666;
+            color: var(--text-light);
             margin-bottom: 0.5rem;
         }
-
-        .summary-card .value {
-            font-size: 2rem;
-            font-weight: bold;
+        .summary-card div {
+            font-size: 1.75rem;
+            font-weight: 700;
             color: var(--primary-color);
         }
-
-        /* Financial Report */
-        .financial-report {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
         }
-
-        .report-header {
+        .avatar-upload {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
         }
-
-        .report-title {
-            font-size: 1.25rem;
+        .avatar-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            display: none;
+        }
+        .avatar-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .report-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .report-card {
-            padding: 1rem;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        .report-card h4 {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-        }
-
-        .report-card .value {
             font-size: 1.5rem;
-            font-weight: bold;
         }
-
-        .report-card.total-received {
-            background-color: #e8f5e9;
-            border-left: 4px solid var(--success-color);
-        }
-
-        .report-card.total-received .value {
-            color: var(--success-color);
-        }
-
-        .report-card.remaining {
-            background-color: #fff3e0;
-            border-left: 4px solid var(--warning-color);
-        }
-
-        .report-card.remaining .value {
-            color: var(--warning-color);
-        }
-
-        .report-card.avulso {
-            background-color: #e3f2fd;
-            border-left: 4px solid #2196f3;
-        }
-
-        .report-card.avulso .value {
-            color: #2196f3;
-        }
-
-        .report-card.mensalista {
-            background-color: #f3e5f5;
-            border-left: 4px solid #9c27b0;
-        }
-
-        .report-card.mensalista .value {
-            color: #9c27b0;
-        }
-
-        /* Caixa Info */
-        .caixa-info {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .caixa-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .caixa-title {
-            font-size: 1.25rem;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .caixa-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .caixa-detail {
-            text-align: center;
-        }
-
-        .caixa-detail h4 {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-        }
-
-        .caixa-detail .value {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .caixa-detail .value.positive {
-            color: var(--success-color);
-        }
-
-        .caixa-detail .value.negative {
-            color: var(--danger-color);
-        }
-
-        /* Forms */
-        .form-row {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        /* Tables */
-        .table-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        .actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-small {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.85rem;
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-        }
-
-        .btn-danger:hover {
-            background-color: #d32f2f;
-        }
-
-        .btn-warning {
-            background-color: var(--warning-color);
-        }
-
-        .btn-warning:hover {
-            background-color: #f57c00;
-        }
-
-        .status-paid {
-            color: var(--success-color);
-            font-weight: 600;
-        }
-
-        .status-unpaid {
-            color: var(--danger-color);
-            font-weight: 600;
-        }
-
-        .status-confirmed {
-            color: var(--success-color);
-            font-weight: 600;
-        }
-
-        .status-pending {
-            color: var(--warning-color);
-            font-weight: 600;
-        }
-
-        /* Checkboxes */
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .checkbox-container input[type="checkbox"] {
-            width: auto;
-        }
-
-        /* Messages */
-        .message {
-            padding: 0.75rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .message-success {
-            background-color: #e8f5e9;
-            color: var(--success-color);
-            border: 1px solid #c8e6c9;
-        }
-
-        .message-error {
-            background-color: #ffebee;
-            color: var(--danger-color);
-            border: 1px solid #ffcdd2;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
+        @media (max-width:768px){ 
+            .header-content{ 
+                flex-direction:column; 
+                align-items:flex-start; 
+            } 
             .nav-menu {
-                justify-content: center;
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: space-between;
             }
-
-            .nav-menu li {
-                margin: 0 0.75rem;
-            }
-
-            .form-row {
+            .form-row{ 
+                display:block; 
+            } 
+            .table-container{ 
+                overflow-x:auto; 
+            } 
+            table{ 
+                min-width:600px; 
+            } 
+            .pending-banner {
                 flex-direction: column;
-                gap: 0;
-            }
-
-            .table-container {
-                overflow-x: auto;
-            }
-
-            table {
-                min-width: 600px;
+                align-items: flex-start;
             }
         }
     </style>
@@ -560,186 +307,141 @@
     <!-- Login Screen -->
     <div class="login-container" id="loginScreen">
         <div class="login-form">
-            <svg class="login-logo" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-                <rect x="10" y="10" width="180" height="40" rx="5" fill="#2e7d32" stroke="#1b5e20" stroke-width="2"/>
-                <text x="100" y="25" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">PELADINHA</text>
-                <text x="100" y="40" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">SUB OBITO</text>
-                <text x="100" y="52" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10">DESDE 2025</text>
-            </svg>
-            <h2>Sub Óbito - Login</h2>
+            <h2 style="margin-bottom: 1.5rem; color: var(--text-color);">Sub Óbito - Login</h2>
             <div class="form-group">
                 <label for="username">Usuário</label>
-                <input type="text" id="username" placeholder="Digite seu usuário">
+                <input id="username" type="text" placeholder="Usuário (admin)">
             </div>
             <div class="form-group">
                 <label for="password">Senha</label>
-                <input type="password" id="password" placeholder="Digite sua senha">
+                <input id="password" type="password" placeholder="Senha">
             </div>
-            <button class="btn btn-block" id="loginBtn">Entrar</button>
+            <button class="btn" id="loginBtn" style="width: 100%; justify-content: center;">Entrar</button>
         </div>
     </div>
 
-    <!-- Main App -->
-    <div class="app-container" id="appContainer">
-        <!-- Header -->
+    <!-- App -->
+    <div class="app-container" id="appContainer" style="display:none;">
         <header class="header">
             <div class="container header-content">
-                <div class="logo-container">
-                    <svg class="header-logo" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="5" y="5" width="110" height="30" rx="3" fill="white" stroke="#1b5e20" stroke-width="1"/>
-                        <text x="60" y="15" text-anchor="middle" fill="#2e7d32" font-family="Arial, sans-serif" font-size="8" font-weight="bold">PELADINHA</text>
-                        <text x="60" y="25" text-anchor="middle" fill="#2e7d32" font-family="Arial, sans-serif" font-size="10" font-weight="bold">SUB OBITO</text>
-                        <text x="60" y="33" text-anchor="middle" fill="#2e7d32" font-family="Arial, sans-serif" font-size="6">DESDE 2025</text>
-                    </svg>
-                    <div class="logo-text">Sub Óbito</div>
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <div style="font-weight:bold;font-size:1.5rem;">Sub Óbito</div>
+                    <div style="font-size:.9rem;opacity:.9;">Controle de Pagamentos</div>
                 </div>
-                <ul class="nav-menu">
-                    <li><a href="#" class="nav-link active" data-section="dashboard">Painel Principal</a></li>
-                    <li><a href="#" class="nav-link" data-section="caixa">Caixa</a></li>
-                    <li><a href="#" id="logoutBtn">Sair</a></li>
-                </ul>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#" class="nav-link active" data-section="dashboard">Painel Principal</a></li>
+                        <li><a href="#" class="nav-link" data-section="caixa">Caixa</a></li>
+                        <li><a href="#" id="logoutBtn" style="color:white;">Sair</a></li>
+                    </ul>
+                </nav>
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="container">
-                <!-- Dashboard Section -->
-                <section class="section active" id="dashboard">
+                <div id="pendingBannerContainer"></div>
+                <section id="dashboard" class="section active">
                     <div class="section-header">
-                        <h2 class="section-title">Painel Principal</h2>
+                        <h2 style="font-weight: 700; color: var(--text-color);">Painel Principal</h2>
+                        <div style="display:flex;gap:.5rem;">
+                            <button class="btn" id="refreshDataBtn">🔄 Atualizar</button>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:1.5rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;">
                         <div>
-                            <button class="btn" id="resetPaymentsBtn">Resetar Pagamentos</button>
-                            <button class="btn" id="refreshDataBtn">🔄 Atualizar Dados</button>
+                            <label for="monthFilter">Filtrar por mês:</label><br/>
+                            <select id="monthFilter" style="margin-top: 0.25rem;"></select>
+                        </div>
+                        <div>
+                            <label for="valorMensalistaInput">Valor por Mensalista (R$):</label><br/>
+                            <input id="valorMensalistaInput" type="number" step="0.01" style="padding:.5rem;border:1px solid var(--border-color);border-radius:6px; margin-top: 0.25rem;" />
                         </div>
                     </div>
 
-                    <!-- Month Filter -->
-                    <div class="month-filter">
-                        <label for="monthFilter">Filtrar por mês:</label>
-                        <select id="monthFilter">
-                            <option value="2025-01">Janeiro 2025</option>
-                            <option value="2025-02">Fevereiro 2025</option>
-                            <option value="2025-03">Março 2025</option>
-                            <option value="2025-04">Abril 2025</option>
-                            <option value="2025-05">Maio 2025</option>
-                            <option value="2025-06">Junho 2025</option>
-                            <option value="2025-07">Julho 2025</option>
-                            <option value="2025-08">Agosto 2025</option>
-                            <option value="2025-09">Setembro 2025</option>
-                            <option value="2025-10">Outubro 2025</option>
-                            <option value="2025-11">Novembro 2025</option>
-                            <option value="2025-12">Dezembro 2025</option>
-                        </select>
-                    </div>
-
-                    <!-- Quadra Info -->
                     <div class="quadra-info">
-                        <div class="quadra-header">
-                            <h3 class="quadra-title">Quadra da Semana</h3>
-                            <button class="btn btn-small" id="editQuadraBtn">Editar</button>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <h3 style="color: var(--primary-color);">Quadra da Semana</h3>
+                            <button class="btn btn-small" id="editQuadraBtn">✏️ Editar</button>
                         </div>
-                        <div class="quadra-details">
-                            <div class="quadra-detail">
-                                <h4>Local</h4>
-                                <div class="value" id="quadraLocal">Quadra Municipal</div>
+                        <div class="quadra-details" style="margin-top:1rem;">
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Local</h4>
+                                <div id="quadraLocal" style="font-weight: 600; margin-top: 0.25rem;">Quadra Municipal</div>
                             </div>
-                            <div class="quadra-detail">
-                                <h4>Valor da Reserva</h4>
-                                <div class="value" id="quadraValor">R$ 180,00</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Valor da Reserva</h4>
+                                <div id="quadraValor" style="font-weight: 600; margin-top: 0.25rem;">R$ 0,00</div>
                             </div>
-                            <div class="quadra-detail">
-                                <h4>Duração</h4>
-                                <div class="value" id="quadraDuracao">2 horas</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Duração</h4>
+                                <div id="quadraDuracao" style="font-weight: 600; margin-top: 0.25rem;">--</div>
                             </div>
-                            <div class="quadra-detail">
-                                <h4>Valor por Mensalista</h4>
-                                <div class="value" id="valorMensalista">R$ 15,00</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Valor por Mensalista</h4>
+                                <div id="valorMensalistaDisplay" style="font-weight: 600; margin-top: 0.25rem;">R$ 0,00</div>
                             </div>
-                            <div class="quadra-detail">
-                                <h4>Valor Avulso</h4>
-                                <div class="value" id="valorAvulso">R$ 20,00</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Valor Avulso</h4>
+                                <div id="valorAvulsoDisplay" style="font-weight: 600; margin-top: 0.25rem;">R$ 0,00</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Financial Report -->
                     <div class="financial-report">
-                        <div class="report-header">
-                            <h3 class="report-title">Relatório Financeiro</h3>
-                        </div>
-                        <div class="report-cards">
-                            <div class="report-card total-received">
-                                <h4>Total Arrecadado</h4>
-                                <div class="value" id="totalArrecadado">R$ 0,00</div>
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Relatório Financeiro</h3>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:1rem;">
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Total Arrecadado</h4>
+                                <div id="totalArrecadado" style="font-weight: 700; margin-top: 0.25rem; font-size: 1.25rem;">R$ 0,00</div>
                             </div>
-                            <div class="report-card remaining">
-                                <h4>Falta Arrecadar</h4>
-                                <div class="value" id="faltaArrecadar">R$ 180,00</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Falta Arrecadar</h4>
+                                <div id="faltaArrecadar" style="font-weight: 700; margin-top: 0.25rem; font-size: 1.25rem;">R$ 0,00</div>
                             </div>
-                            <div class="report-card avulso">
-                                <h4>Avulsos Pagos</h4>
-                                <div class="value" id="avulsosPagos">R$ 0,00</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Avulsos Pagos</h4>
+                                <div id="avulsosPagos" style="font-weight: 700; margin-top: 0.25rem; font-size: 1.25rem;">R$ 0,00</div>
                             </div>
-                            <div class="report-card mensalista">
-                                <h4>Mensalistas Pagos</h4>
-                                <div class="value" id="mensalistasPagos">R$ 0,00</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Mensalistas Pagos</h4>
+                                <div id="mensalistasPagos" style="font-weight: 700; margin-top: 0.25rem; font-size: 1.25rem;">R$ 0,00</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Summary Cards -->
                     <div class="summary-cards">
-                        <div class="summary-card">
-                            <h3>Total de Jogadores</h3>
-                            <div class="value" id="totalPlayers">0</div>
-                        </div>
-                        <div class="summary-card">
-                            <h3>Mensalistas</h3>
-                            <div class="value" id="mensalistas">0</div>
-                        </div>
-                        <div class="summary-card">
-                            <h3>Avulsos</h3>
-                            <div class="value" id="avulsos">0</div>
-                        </div>
-                        <div class="summary-card">
-                            <h3>Pagamentos em Dia</h3>
-                            <div class="value" id="paidPlayers">0</div>
-                        </div>
-                        <div class="summary-card">
-                            <h3>Confirmados</h3>
-                            <div class="value" id="confirmedPlayers">0</div>
-                        </div>
+                        <div class="summary-card"><h4>Total de Jogadores</h4><div id="totalPlayers">0</div></div>
+                        <div class="summary-card"><h4>Mensalistas</h4><div id="mensalistas">0</div></div>
+                        <div class="summary-card"><h4>Avulsos</h4><div id="avulsos">0</div></div>
+                        <div class="summary-card"><h4>Pagamentos em Dia</h4><div id="paidPlayers">0</div></div>
+                        <div class="summary-card"><h4>Confirmados</h4><div id="confirmedPlayers">0</div></div>
                     </div>
 
-                    <!-- Add Player Form -->
-                    <div class="table-container">
-                        <div style="padding: 1rem;">
-                            <h3 style="margin-bottom: 1rem;">Adicionar Jogador</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="playerName">Nome</label>
-                                    <input type="text" id="playerName" placeholder="Nome ou apelido">
-                                </div>
-                                <div class="form-group">
-                                    <label for="playerType">Tipo</label>
-                                    <select id="playerType">
-                                        <option value="Mensalista">Mensalista</option>
-                                        <option value="Avulso">Avulso</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" style="display: flex; align-items: flex-end;">
-                                    <button class="btn btn-block" id="addPlayerBtn">Adicionar Jogador</button>
-                                </div>
+                    <div class="table-container" style="margin-top:1.5rem;">
+                        <h3 style="margin-bottom:1rem; color: var(--primary-color);">Adicionar Jogador</h3>
+                        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                            <input id="playerName" placeholder="Nome ou apelido" style="flex:1;padding:.75rem;border:1px solid var(--border-color);border-radius:6px;" />
+                            <select id="playerType" style="padding:.75rem;border:1px solid var(--border-color);border-radius:6px;">
+                                <option value="Mensalista">Mensalista</option>
+                                <option value="Avulso">Avulso</option>
+                            </select>
+                            <div class="avatar-upload">
+                                <div class="avatar-placeholder" id="avatarPlaceholder">👤</div>
+                                <img id="avatarPreview" class="avatar-preview" src="" alt="Preview">
+                                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                                <button type="button" class="btn btn-small" id="uploadAvatarBtn">📷</button>
                             </div>
+                            <button class="btn" id="addPlayerBtn">Adicionar Jogador</button>
                         </div>
                     </div>
 
-                    <!-- Players Table -->
-                    <div class="table-container">
+                    <div class="table-container" style="margin-top: 1.5rem;">
                         <table>
                             <thead>
                                 <tr>
+                                    <th>Foto</th>
                                     <th>Nome</th>
                                     <th>Tipo</th>
                                     <th>Valor</th>
@@ -748,82 +450,52 @@
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="playersTableBody">
-                                <!-- Players will be populated here -->
-                            </tbody>
+                            <tbody id="playersTableBody"></tbody>
                         </table>
                     </div>
                 </section>
 
-                <!-- Caixa Section -->
-                <section class="section" id="caixa">
+                <section id="caixa" class="section">
                     <div class="section-header">
-                        <h2 class="section-title">Caixa</h2>
+                        <h2 style="font-weight: 700; color: var(--text-color);">Caixa</h2>
                         <button class="btn" id="refreshCaixaBtn">🔄 Atualizar</button>
                     </div>
 
-                    <!-- Caixa Info -->
                     <div class="caixa-info">
-                        <div class="caixa-header">
-                            <h3 class="caixa-title">Saldo em Caixa</h3>
-                        </div>
-                        <div class="caixa-details">
-                            <div class="caixa-detail">
-                                <h4>Valor em Caixa</h4>
-                                <div class="value" id="valorCaixa">R$ 0,00</div>
+                        <h3 style="color: var(--primary-color);">Saldo em Caixa</h3>
+                        <div class="caixa-details" style="margin-top:1rem;">
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Dinheiro em caixa</h4>
+                                <div id="valorCaixa" style="font-weight: 700; margin-top: 0.25rem; font-size: 1.25rem;">R$ 0,00</div>
                             </div>
-                            <div class="caixa-detail">
-                                <h4>Total de Itens Comprados</h4>
-                                <div class="value" id="totalItensComprados">R$ 0,00</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Total de Itens Comprados</h4>
+                                <div id="totalItensComprados" style="font-weight: 700; margin-top: 0.25rem; font-size: 1.25rem;">R$ 0,00</div>
                             </div>
-                            <div class="caixa-detail">
-                                <h4>Saldo Final</h4>
-                                <div class="value" id="saldoFinal">R$ 0,00</div>
+                            <div>
+                                <h4 style="color: var(--text-light); font-size: 0.9rem;">Saldo Final</h4>
+                                <div id="saldoFinal" style="font-weight: 700; margin-top: 0.25rem; font-size: 1.25rem;">R$ 0,00</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Add Item Form -->
-                    <div class="table-container">
-                        <div style="padding: 1rem;">
-                            <h3 style="margin-bottom: 1rem;">Adicionar Item</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="itemName">Nome do Item</label>
-                                    <input type="text" id="itemName" placeholder="Ex: Bola, Coletes, Redes...">
-                                </div>
-                                <div class="form-group">
-                                    <label for="itemValue">Valor (R$)</label>
-                                    <input type="number" id="itemValue" placeholder="0.00" step="0.01">
-                                </div>
-                                <div class="form-group">
-                                    <label for="itemStatus">Status</label>
-                                    <select id="itemStatus">
-                                        <option value="A comprar">A comprar</option>
-                                        <option value="Comprado">Comprado</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" style="display: flex; align-items: flex-end;">
-                                    <button class="btn btn-block" id="addItemBtn">Adicionar Item</button>
-                                </div>
-                            </div>
+                    <div class="table-container" style="margin-top:1.5rem;">
+                        <h3 style="margin-bottom:1rem; color: var(--primary-color);">Adicionar Item</h3>
+                        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                            <input id="itemName" placeholder="Ex: Bola, Coletes..." style="flex:1;padding:.75rem;border:1px solid var(--border-color);border-radius:6px;" />
+                            <input id="itemValue" type="number" step="0.01" placeholder="0.00" style="width:140px;padding:.75rem;border:1px solid var(--border-color);border-radius:6px;" />
+                            <select id="itemStatus" style="padding:.75rem;border:1px solid var(--border-color);border-radius:6px;">
+                                <option value="A comprar">A comprar</option>
+                                <option value="Comprado">Comprado</option>
+                            </select>
+                            <button class="btn" id="addItemBtn">Adicionar Item</button>
                         </div>
                     </div>
 
-                    <!-- Items Table -->
-                    <div class="table-container">
+                    <div class="table-container" style="margin-top:1.5rem;">
                         <table>
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Valor (R$)</th>
-                                    <th>Status</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="itemsTableBody">
-                                <!-- Items will be populated here -->
-                            </tbody>
+                            <thead><tr><th>Item</th><th>Valor (R$)</th><th>Status</th><th>Ações</th></tr></thead>
+                            <tbody id="itemsTableBody"></tbody>
                         </table>
                     </div>
                 </section>
@@ -832,540 +504,651 @@
     </div>
 
     <script>
-        // Configuration
-        const BIN_ID = '690f96e7d0ea881f40dc3768';
-        const MASTER_KEY = '$2a$10$AKM30q2AE/6WJhXqS2dft.8Luvw0h6GHLQWhtcUBQc12SCGK3oRra';
-        const API_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+    /* -------------------------
+       Configuration / Storage
+       ------------------------- */
+    const BIN_ID = '690f96e7d0ea881f40dc3768';
+    const MASTER_KEY = '$2a$10$AKM30q2AE/6WJhXqS2dft.8Luvw0h6GHLQWhtcUBQc12SCGK3oRra';
+    const API_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 
-        // Application State
-        let players = [];
-        let items = [];
-        let quadraInfo = {
-            local: "Quadra Municipal",
-            valor: 180,
-            duracao: "2 horas",
-            valorAvulso: 20,
-            valorMensalista: 15  // Novo campo para valor fixo dos mensalistas
-        };
+    const LOCAL_CACHE_KEY = 'subobito_cache_v1';
 
-        // DOM Elements
-        const loginScreen = document.getElementById('loginScreen');
-        const appContainer = document.getElementById('appContainer');
-        const loginBtn = document.getElementById('loginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const sections = document.querySelectorAll('.section');
-        const addPlayerBtn = document.getElementById('addPlayerBtn');
-        const resetPaymentsBtn = document.getElementById('resetPaymentsBtn');
-        const refreshDataBtn = document.getElementById('refreshDataBtn');
-        const addItemBtn = document.getElementById('addItemBtn');
-        const refreshCaixaBtn = document.getElementById('refreshCaixaBtn');
-        const editQuadraBtn = document.getElementById('editQuadraBtn');
-        const monthFilter = document.getElementById('monthFilter');
+    /* -------------------------
+       Application State
+       ------------------------- */
+    let players = [];
+    let items = [];
+    let quadraInfo = {
+        local: "Quadra Municipal",
+        valor: 180,
+        duracao: "2 horas",
+        valorAvulso: 20,
+        valorMensalista: 15
+    };
+    let pendingChanges = false; // if true, there are local changes not yet saved to JSONBin
+    let currentAvatarData = null; // Store the current avatar data for new player
 
-        // Login Credentials (hardcoded as requested)
-        const ADMIN_USERNAME = 'admin';
-        const ADMIN_PASSWORD = 'subobito2024';
+    /* -------------------------
+       DOM Elements
+       ------------------------- */
+    const loginScreen = document.getElementById('loginScreen');
+    const appContainer = document.getElementById('appContainer');
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.section');
+    const addPlayerBtn = document.getElementById('addPlayerBtn');
+    const refreshDataBtn = document.getElementById('refreshDataBtn');
+    const addItemBtn = document.getElementById('addItemBtn');
+    const refreshCaixaBtn = document.getElementById('refreshCaixaBtn');
+    const editQuadraBtn = document.getElementById('editQuadraBtn');
+    const monthFilter = document.getElementById('monthFilter');
+    const valorMensalistaInput = document.getElementById('valorMensalistaInput');
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+    const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
 
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is already logged in
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            if (isLoggedIn === 'true') {
-                showApp();
-                loadData();
-            }
+    /* -------------------------
+       Login (hardcoded)
+       ------------------------- */
+    const ADMIN_USERNAME = 'admin';
+    const ADMIN_PASSWORD = 'subobito2024';
 
-            // Login button
-            loginBtn.addEventListener('click', handleLogin);
+    /* -------------------------
+       Initialization
+       ------------------------- */
+    document.addEventListener('DOMContentLoaded', () => {
+        // populate month filter
+        populateMonthFilter(new Date());
 
-            // Logout button
-            logoutBtn.addEventListener('click', handleLogout);
+        // restore login
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            showApp();
+        }
 
-            // Navigation
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const sectionId = this.getAttribute('data-section');
-                    showSection(sectionId);
-                    
-                    // Update active nav link
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-
-            // Dashboard actions
-            addPlayerBtn.addEventListener('click', addPlayer);
-            resetPaymentsBtn.addEventListener('click', resetPayments);
-            refreshDataBtn.addEventListener('click', loadData);
-            editQuadraBtn.addEventListener('click', editQuadraInfo);
-
-            // Caixa actions
-            addItemBtn.addEventListener('click', addItem);
-            refreshCaixaBtn.addEventListener('click', loadData);
-
-            // Month filter
-            monthFilter.addEventListener('change', function() {
-                updateDashboard();
-                updateFinancialReport();
-                updateCaixaInfo();
+        loginBtn.addEventListener('click', handleLogin);
+        logoutBtn.addEventListener('click', handleLogout);
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.getAttribute('data-section');
+                showSection(section);
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
             });
         });
 
-        // Functions
-        function handleLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        addPlayerBtn.addEventListener('click', addPlayer);
+        addItemBtn.addEventListener('click', addItem);
+        refreshDataBtn.addEventListener('click', () => loadData({forceFetch:true}));
+        refreshCaixaBtn.addEventListener('click', () => loadData({forceFetch:true}));
+        editQuadraBtn.addEventListener('click', editQuadraInfo);
+        monthFilter.addEventListener('change', () => { updateAllDisplays(); saveLocalCache(); });
+        valorMensalistaInput.addEventListener('change', () => {
+            quadraInfo.valorMensalista = parseFloat(valorMensalistaInput.value) || quadraInfo.valorMensalista;
+            setPendingChanges(true);
+            updateAllDisplays();
+            saveLocalCache();
+        });
 
-            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-                localStorage.setItem('isLoggedIn', 'true');
-                showApp();
-                loadData();
-                showMessage('Login realizado com sucesso!', 'success');
+        // Avatar upload handling
+        uploadAvatarBtn.addEventListener('click', () => {
+            avatarInput.click();
+        });
+        
+        avatarInput.addEventListener('change', handleAvatarUpload);
+
+        // initial load: prefer server, but if local pending exists ask user
+        loadData({initial:true});
+    });
+
+    /* -------------------------
+       Avatar Upload Functionality
+       ------------------------- */
+    function handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        if (!file.type.match('image.*')) {
+            showMessage('Por favor, selecione apenas imagens.', 'error');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            currentAvatarData = e.target.result;
+            avatarPreview.src = currentAvatarData;
+            avatarPreview.style.display = 'block';
+            avatarPlaceholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function resetAvatarInput() {
+        currentAvatarData = null;
+        avatarPreview.style.display = 'none';
+        avatarPlaceholder.style.display = 'flex';
+        avatarInput.value = '';
+    }
+
+    /* -------------------------
+       Helper: populate months (last 24 months)
+       ------------------------- */
+    function populateMonthFilter(now) {
+        monthFilter.innerHTML = '';
+        const months = [];
+        const current = new Date(now.getFullYear(), now.getMonth(), 1);
+        for (let i=0;i<24;i++) {
+            const d = new Date(current.getFullYear(), current.getMonth()-i, 1);
+            const value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+            const label = d.toLocaleString('pt-BR', { month:'long', year:'numeric' });
+            months.push({value,label});
+        }
+        months.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m.value; opt.textContent = m.label;
+            monthFilter.appendChild(opt);
+        });
+        // set default to current month
+        monthFilter.value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    }
+
+    /* -------------------------
+       Pending banner
+       ------------------------- */
+    function setPendingChanges(flag) {
+        pendingChanges = !!flag;
+        saveLocalCache();
+        renderPendingBanner();
+    }
+
+    function renderPendingBanner() {
+        const container = document.getElementById('pendingBannerContainer');
+        container.innerHTML = '';
+        if (pendingChanges) {
+            const div = document.createElement('div');
+            div.className = 'pending-banner';
+            div.innerHTML = `<div>Existem alterações locais pendentes que ainda não foram salvas no servidor.</div>
+                <div style="display:flex;gap:.5rem;">
+                    <button class="btn btn-small" id="savePendingBtn">💾 Salvar no servidor</button>
+                    <button class="btn btn-small btn-danger" id="discardPendingBtn">🗑️ Descartar alterações locais</button>
+                </div>`;
+            container.appendChild(div);
+            document.getElementById('savePendingBtn').addEventListener('click', () => {
+                if (confirm('Confirmar: Deseja salvar as alterações locais no servidor (JSONBin)?')) {
+                    saveData();
+                }
+            });
+            document.getElementById('discardPendingBtn').addEventListener('click', () => {
+                if (confirm('Confirmar: Deseja descartar todas as alterações locais e carregar os dados do servidor?')) {
+                    loadData({forceFetch:true, discardLocal:true});
+                }
+            });
+        }
+    }
+
+    /* -------------------------
+       Local cache handling
+       ------------------------- */
+    function saveLocalCache() {
+        const payload = { players, items, quadraInfo, pendingChanges };
+        try {
+            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(payload));
+        } catch (e) {
+            console.warn('Não foi possível salvar cache local:', e);
+        }
+    }
+
+    function loadLocalCache() {
+        try {
+            const raw = localStorage.getItem(LOCAL_CACHE_KEY);
+            if (!raw) return null;
+            return JSON.parse(raw);
+        } catch (e) {
+            console.warn('Erro ao ler cache local:', e);
+            return null;
+        }
+    }
+
+    /* -------------------------
+       Load data (server-first with local fallback and conflict handling)
+       ------------------------- */
+    async function loadData(options = {}) {
+        // options: initial (bool), forceFetch (bool), discardLocal (bool)
+        const local = loadLocalCache();
+
+        // If initial load and local has pendingChanges -> ask user whether to keep local or use server
+        if (options.initial && local && local.pendingChanges) {
+            const keepLocal = confirm('Detectadas alterações locais não salvas no servidor. Deseja manter as alterações locais (serão oferecidas para salvar) ou descartar e carregar do servidor? (OK = manter local / Cancel = descartar)'); 
+            if (keepLocal) {
+                // restore from local cache and do not fetch from server
+                players = local.players || [];
+                items = local.items || [];
+                quadraInfo = local.quadraInfo || quadraInfo;
+                pendingChanges = true;
+                applyUIStateAfterLoad();
+                showMessage('Dados carregados do cache local. Lembre-se de salvar no servidor quando desejar.', 'success');
+                return;
             } else {
-                showMessage('Usuário ou senha incorretos!', 'error');
+                // proceed to fetch from server and discard local
+                localStorage.removeItem(LOCAL_CACHE_KEY);
             }
         }
 
-        function handleLogout() {
-            localStorage.removeItem('isLoggedIn');
-            showLogin();
-        }
-
-        function showLogin() {
-            loginScreen.style.display = 'flex';
-            appContainer.style.display = 'none';
-        }
-
-        function showApp() {
-            loginScreen.style.display = 'none';
-            appContainer.style.display = 'block';
-        }
-
-        function showSection(sectionId) {
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-        }
-
-        async function loadData() {
-            try {
-                const response = await fetch(API_URL + '/latest', {
-                    headers: {
-                        'X-Master-Key': MASTER_KEY
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Erro ao carregar dados');
-                }
-
-                const data = await response.json();
-                players = data.record.players || [];
-                items = data.record.items || [];
-                quadraInfo = data.record.quadraInfo || quadraInfo;
-
-                updateDashboard();
-                updateQuadraInfo();
-                updatePlayersTable();
-                updateItemsTable();
-                updateFinancialReport();
-                updateCaixaInfo();
-                showMessage('Dados atualizados com sucesso!', 'success');
-            } catch (error) {
-                console.error('Erro ao carregar dados:', error);
-                showMessage('Erro ao carregar dados. Verifique sua conexão.', 'error');
-            }
-        }
-
-        async function saveData() {
-            try {
-                const data = {
-                    players: players,
-                    items: items,
-                    quadraInfo: quadraInfo
-                };
-
-                const response = await fetch(API_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': MASTER_KEY
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Erro ao salvar dados');
-                }
-
-                showMessage('Dados salvos com sucesso!', 'success');
-            } catch (error) {
-                console.error('Erro ao salvar dados:', error);
-                showMessage('Erro ao salvar dados. Verifique sua conexão.', 'error');
-            }
-        }
-
-        function updateQuadraInfo() {
-            document.getElementById('quadraLocal').textContent = quadraInfo.local;
-            document.getElementById('quadraValor').textContent = `R$ ${quadraInfo.valor.toFixed(2).replace('.', ',')}`;
-            document.getElementById('quadraDuracao').textContent = quadraInfo.duracao;
-            document.getElementById('valorAvulso').textContent = `R$ ${quadraInfo.valorAvulso.toFixed(2).replace('.', ',')}`;
-            document.getElementById('valorMensalista').textContent = `R$ ${quadraInfo.valorMensalista.toFixed(2).replace('.', ',')}`;
-        }
-
-        function updateDashboard() {
-            const currentMonth = monthFilter.value;
-            const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
-            
-            const totalPlayers = monthPlayers.length;
-            const mensalistas = monthPlayers.filter(p => p.type === 'Mensalista').length;
-            const avulsos = monthPlayers.filter(p => p.type === 'Avulso').length;
-            const paidPlayers = monthPlayers.filter(p => p.paid).length;
-            const confirmedPlayers = monthPlayers.filter(p => p.confirmed).length;
-
-            document.getElementById('totalPlayers').textContent = totalPlayers;
-            document.getElementById('mensalistas').textContent = mensalistas;
-            document.getElementById('avulsos').textContent = avulsos;
-            document.getElementById('paidPlayers').textContent = paidPlayers;
-            document.getElementById('confirmedPlayers').textContent = confirmedPlayers;
-        }
-
-        function updateFinancialReport() {
-            const currentMonth = monthFilter.value;
-            const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
-            
-            // Calcular valores arrecadados
-            const avulsosPagos = monthPlayers.filter(p => p.type === 'Avulso' && p.paid);
-            const mensalistasPagos = monthPlayers.filter(p => p.type === 'Mensalista' && p.paid);
-            
-            const totalAvulsos = avulsosPagos.length * quadraInfo.valorAvulso;
-            const totalMensalistas = mensalistasPagos.length * quadraInfo.valorMensalista;
-            const totalArrecadado = totalAvulsos + totalMensalistas;
-            const faltaArrecadar = Math.max(0, quadraInfo.valor - totalArrecadado);
-
-            // Atualizar a interface
-            document.getElementById('totalArrecadado').textContent = `R$ ${totalArrecadado.toFixed(2).replace('.', ',')}`;
-            document.getElementById('faltaArrecadar').textContent = `R$ ${faltaArrecadar.toFixed(2).replace('.', ',')}`;
-            document.getElementById('avulsosPagos').textContent = `R$ ${totalAvulsos.toFixed(2).replace('.', ',')}`;
-            document.getElementById('mensalistasPagos').textContent = `R$ ${totalMensalistas.toFixed(2).replace('.', ',')}`;
-        }
-
-        function updateCaixaInfo() {
-            // Calcular o valor em caixa (excedente arrecadado)
-            const currentMonth = monthFilter.value;
-            const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
-            
-            const avulsosPagos = monthPlayers.filter(p => p.type === 'Avulso' && p.paid);
-            const mensalistasPagos = monthPlayers.filter(p => p.type === 'Mensalista' && p.paid);
-            
-            const totalAvulsos = avulsosPagos.length * quadraInfo.valorAvulso;
-            const totalMensalistas = mensalistasPagos.length * quadraInfo.valorMensalista;
-            const totalArrecadado = totalAvulsos + totalMensalistas;
-            
-            // Valor em caixa é o excedente arrecadado
-            const valorCaixa = Math.max(0, totalArrecadado - quadraInfo.valor);
-            
-            // Calcular total de itens comprados
-            const itensComprados = items.filter(item => item.status === 'Comprado');
-            const totalItensComprados = itensComprados.reduce((total, item) => total + parseFloat(item.value), 0);
-            
-            // Saldo final (valor em caixa - itens comprados)
-            const saldoFinal = valorCaixa - totalItensComprados;
-            
-            // Atualizar a interface
-            document.getElementById('valorCaixa').textContent = `R$ ${valorCaixa.toFixed(2).replace('.', ',')}`;
-            document.getElementById('totalItensComprados').textContent = `R$ ${totalItensComprados.toFixed(2).replace('.', ',')}`;
-            
-            const saldoFinalElement = document.getElementById('saldoFinal');
-            saldoFinalElement.textContent = `R$ ${saldoFinal.toFixed(2).replace('.', ',')}`;
-            saldoFinalElement.className = saldoFinal >= 0 ? 'value positive' : 'value negative';
-        }
-
-        function updatePlayersTable() {
-            const tableBody = document.getElementById('playersTableBody');
-            tableBody.innerHTML = '';
-
-            const currentMonth = monthFilter.value;
-            const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
-
-            monthPlayers.forEach((player, index) => {
-                const row = document.createElement('tr');
-                const valorJogador = player.type === 'Avulso' ? 
-                    `R$ ${quadraInfo.valorAvulso.toFixed(2).replace('.', ',')}` : 
-                    `R$ ${quadraInfo.valorMensalista.toFixed(2).replace('.', ',')}`;
-                
-                row.innerHTML = `
-                    <td>${player.name}</td>
-                    <td>${player.type}</td>
-                    <td>${valorJogador}</td>
-                    <td>
-                        <div class="checkbox-container">
-                            <input type="checkbox" id="paid-${index}" ${player.paid ? 'checked' : ''}>
-                            <label for="paid-${index}" class="${player.paid ? 'status-paid' : 'status-unpaid'}">
-                                ${player.paid ? 'Pago' : 'Em aberto'}
-                            </label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="checkbox-container">
-                            <input type="checkbox" id="confirmed-${index}" ${player.confirmed ? 'checked' : ''}>
-                            <label for="confirmed-${index}" class="${player.confirmed ? 'status-confirmed' : 'status-pending'}">
-                                ${player.confirmed ? 'Confirmado' : 'Pendente'}
-                            </label>
-                        </div>
-                    </td>
-                    <td class="actions">
-                        <button class="btn btn-small btn-danger" onclick="deletePlayer(${index})">Excluir</button>
-                    </td>
-                `;
-
-                // Add event listeners for checkboxes
-                const paidCheckbox = row.querySelector(`#paid-${index}`);
-                const confirmedCheckbox = row.querySelector(`#confirmed-${index}`);
-
-                paidCheckbox.addEventListener('change', function() {
-                    players[index].paid = this.checked;
-                    saveData();
-                    updateDashboard();
-                    updatePlayersTable();
-                    updateFinancialReport();
-                    updateCaixaInfo();
-                });
-
-                confirmedCheckbox.addEventListener('change', function() {
-                    players[index].confirmed = this.checked;
-                    saveData();
-                    updateDashboard();
-                    updatePlayersTable();
-                });
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        function updateItemsTable() {
-            const tableBody = document.getElementById('itemsTableBody');
-            tableBody.innerHTML = '';
-
-            items.forEach((item, index) => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${item.name}</td>
-                    <td>R$ ${parseFloat(item.value).toFixed(2).replace('.', ',')}</td>
-                    <td>
-                        <span class="${item.status === 'Comprado' ? 'status-paid' : 'status-pending'}">
-                            ${item.status}
-                        </span>
-                    </td>
-                    <td class="actions">
-                        <button class="btn btn-small" onclick="editItem(${index})">Editar</button>
-                        <button class="btn btn-small btn-danger" onclick="deleteItem(${index})">Excluir</button>
-                    </td>
-                `;
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        function editQuadraInfo() {
-            const novoLocal = prompt('Local da quadra:', quadraInfo.local);
-            if (novoLocal === null) return;
-            
-            const novoValor = prompt('Valor da reserva (R$):', quadraInfo.valor);
-            if (novoValor === null) return;
-            
-            const novaDuracao = prompt('Duração:', quadraInfo.duracao);
-            if (novaDuracao === null) return;
-            
-            const novoValorAvulso = prompt('Valor para avulsos (R$):', quadraInfo.valorAvulso);
-            if (novoValorAvulso === null) return;
-            
-            const novoValorMensalista = prompt('Valor para mensalistas (R$):', quadraInfo.valorMensalista);
-            if (novoValorMensalista === null) return;
-
-            if (novoLocal && novoValor && novaDuracao && novoValorAvulso && novoValorMensalista) {
-                quadraInfo.local = novoLocal;
-                quadraInfo.valor = parseFloat(novoValor);
-                quadraInfo.duracao = novaDuracao;
-                quadraInfo.valorAvulso = parseFloat(novoValorAvulso);
-                quadraInfo.valorMensalista = parseFloat(novoValorMensalista);
-                
-                saveData();
-                updateQuadraInfo();
-                updatePlayersTable();
-                updateFinancialReport();
-                updateCaixaInfo();
-                showMessage('Informações da quadra atualizadas!', 'success');
-            }
-        }
-
-        function addPlayer() {
-            const nameInput = document.getElementById('playerName');
-            const typeSelect = document.getElementById('playerType');
-
-            const name = nameInput.value.trim();
-            const type = typeSelect.value;
-            const currentMonth = monthFilter.value;
-
-            if (!name) {
-                showMessage('Por favor, insira um nome para o jogador.', 'error');
+        // Try fetching from server
+        try {
+            const resp = await fetch(API_URL + '/latest', { headers: { 'X-Master-Key': MASTER_KEY } });
+            if (!resp.ok) throw new Error('Resposta não OK do servidor');
+            const data = await resp.json();
+            const serverRecord = data.record || {};
+            // If there's local pending changes and option not discardLocal, prefer server (as requested)
+            if (local && local.pendingChanges && !options.discardLocal) {
+                // Conflict: server prevails according to specification
+                players = serverRecord.players || [];
+                items = serverRecord.items || [];
+                quadraInfo = serverRecord.quadraInfo || quadraInfo;
+                pendingChanges = false;
+                saveLocalCache();
+                applyUIStateAfterLoad();
+                showMessage('Conflito detectado: os dados do servidor foram carregados e substituíram mudanças locais.', 'success');
                 return;
             }
+            // Normal load from server
+            players = serverRecord.players || [];
+            items = serverRecord.items || [];
+            quadraInfo = serverRecord.quadraInfo || quadraInfo;
+            pendingChanges = false;
+            saveLocalCache();
+            applyUIStateAfterLoad();
+            showMessage('Dados carregados do servidor com sucesso.', 'success');
+        } catch (err) {
+            console.error('Erro ao buscar dados do servidor:', err);
+            // If server fails but local exists, restore local
+            if (local) {
+                players = local.players || [];
+                items = local.items || [];
+                quadraInfo = local.quadraInfo || quadraInfo;
+                pendingChanges = !!local.pendingChanges;
+                applyUIStateAfterLoad();
+                showMessage('Não foi possível conectar ao servidor. Trabalhando com dados locais.', 'error');
+            } else {
+                showMessage('Não foi possível carregar dados do servidor e não há cache local.', 'error');
+            }
+        }
+    }
 
-            const newPlayer = {
-                name: name,
-                type: type,
-                paid: false,
-                confirmed: false,
-                month: currentMonth  // Adiciona o mês atual ao jogador
+    /* -------------------------
+       Save data (requires user confirmation)
+       ------------------------- */
+    async function saveData() {
+        // Confirm once more before saving
+        if (!confirm('Confirmação: deseja realmente salvar as alterações no banco (JSONBin)?')) {
+            return;
+        }
+        const payload = { players, items, quadraInfo };
+        try {
+            const resp = await fetch(API_URL, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+                body: JSON.stringify(payload)
+            });
+            if (!resp.ok) throw new Error('Falha ao salvar no servidor');
+            pendingChanges = false;
+            saveLocalCache();
+            renderPendingBanner();
+            showMessage('Dados salvos no servidor com sucesso.', 'success');
+        } catch (err) {
+            console.error('Erro ao salvar dados:', err);
+            showMessage('Erro ao salvar dados no servidor. Verifique a conexão.', 'error');
+        }
+    }
+
+    /* -------------------------
+       UI update helpers
+       ------------------------- */
+    function applyUIStateAfterLoad() {
+        // Update quadra inputs
+        document.getElementById('quadraLocal').textContent = quadraInfo.local;
+        document.getElementById('quadraValor').textContent = `R$ ${quadraInfo.valor.toFixed(2).replace('.',',')}`;
+        document.getElementById('quadraDuracao').textContent = quadraInfo.duracao;
+        document.getElementById('valorAvulsoDisplay').textContent = `R$ ${quadraInfo.valorAvulso.toFixed(2).replace('.',',')}`;
+        document.getElementById('valorMensalistaDisplay').textContent = `R$ ${quadraInfo.valorMensalista.toFixed(2).replace('.',',')}`;
+        valorMensalistaInput.value = quadraInfo.valorMensalista;
+
+        updateAllDisplays();
+        renderPendingBanner();
+    }
+
+    function updateAllDisplays() {
+        updateDashboard();
+        updatePlayersTable();
+        updateItemsTable();
+        updateFinancialReport();
+        updateCaixaInfo();
+    }
+
+    function updateDashboard() {
+        const currentMonth = monthFilter.value;
+        const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
+        document.getElementById('totalPlayers').textContent = monthPlayers.length;
+        document.getElementById('mensalistas').textContent = monthPlayers.filter(p=>p.type==='Mensalista').length;
+        document.getElementById('avulsos').textContent = monthPlayers.filter(p=>p.type==='Avulso').length;
+        document.getElementById('paidPlayers').textContent = monthPlayers.filter(p=>p.paid).length;
+        document.getElementById('confirmedPlayers').textContent = monthPlayers.filter(p=>p.confirmed).length;
+    }
+
+    function updateFinancialReport() {
+        const currentMonth = monthFilter.value;
+        const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
+        const avulsosPagos = monthPlayers.filter(p=>p.type==='Avulso' && p.paid);
+        const mensalistasPagos = monthPlayers.filter(p=>p.type==='Mensalista' && p.paid);
+        const totalAvulsos = avulsosPagos.length * quadraInfo.valorAvulso;
+        const totalMensalistas = mensalistasPagos.length * quadraInfo.valorMensalista;
+        const totalArrecadado = totalAvulsos + totalMensalistas;
+        const faltaArrecadar = Math.max(0, quadraInfo.valor - totalArrecadado);
+        document.getElementById('totalArrecadado').textContent = `R$ ${totalArrecadado.toFixed(2).replace('.',',')}`;
+        document.getElementById('faltaArrecadar').textContent = `R$ ${faltaArrecadar.toFixed(2).replace('.',',')}`;
+        document.getElementById('avulsosPagos').textContent = `R$ ${totalAvulsos.toFixed(2).replace('.',',')}`;
+        document.getElementById('mensalistasPagos').textContent = `R$ ${totalMensalistas.toFixed(2).replace('.',',')}`;
+    }
+
+    function updateCaixaInfo() {
+        const currentMonth = monthFilter.value;
+        const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
+        const avulsosPagos = monthPlayers.filter(p=>p.type==='Avulso' && p.paid);
+        const mensalistasPagos = monthPlayers.filter(p=>p.type==='Mensalista' && p.paid);
+        const totalAvulsos = avulsosPagos.length * quadraInfo.valorAvulso;
+        const totalMensalistas = mensalistasPagos.length * quadraInfo.valorMensalista;
+        const totalArrecadado = totalAvulsos + totalMensalistas;
+
+        // Dinheiro em caixa: excedente arrecadado (arrecadado - valor da reserva)
+        const dinheiroEmCaixa = Math.max(0, totalArrecadado - quadraInfo.valor);
+
+        // Total itens comprados
+        const itensComprados = items.filter(i=>i.status==='Comprado');
+        const totalItensComprados = itensComprados.reduce((s,it)=> s + (parseFloat(it.value)||0), 0);
+
+        // Saldo final = dinheiro em caixa - total itens comprados
+        const saldoFinal = dinheiroEmCaixa - totalItensComprados;
+
+        document.getElementById('valorCaixa').textContent = `R$ ${dinheiroEmCaixa.toFixed(2).replace('.',',')}`;
+        document.getElementById('totalItensComprados').textContent = `R$ ${totalItensComprados.toFixed(2).replace('.',',')}`;
+        const saldoEl = document.getElementById('saldoFinal');
+        saldoEl.textContent = `R$ ${saldoFinal.toFixed(2).replace('.',',')}`;
+        saldoEl.style.color = saldoFinal >= 0 ? 'var(--success-color)' : 'var(--danger-color)';
+    }
+
+    /* -------------------------
+       Players table and actions
+       ------------------------- */
+    function updatePlayersTable() {
+        const tbody = document.getElementById('playersTableBody');
+        tbody.innerHTML = '';
+        const currentMonth = monthFilter.value;
+        const monthPlayers = players.filter(p => p.month === currentMonth || !p.month);
+        monthPlayers.forEach((p, idx) => {
+            const tr = document.createElement('tr');
+            const valorJogador = p.type === 'Avulso' ? `R$ ${quadraInfo.valorAvulso.toFixed(2).replace('.',',')}` : `R$ ${quadraInfo.valorMensalista.toFixed(2).replace('.',',')}`;
+            
+            // Create avatar cell
+            const avatarCell = document.createElement('td');
+            if (p.avatar) {
+                const img = document.createElement('img');
+                img.src = p.avatar;
+                img.className = 'player-avatar';
+                avatarCell.appendChild(img);
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'player-avatar';
+                placeholder.style.background = 'var(--primary-light)';
+                placeholder.style.display = 'flex';
+                placeholder.style.alignItems = 'center';
+                placeholder.style.justifyContent = 'center';
+                placeholder.style.color = 'var(--primary-color)';
+                placeholder.innerHTML = '👤';
+                avatarCell.appendChild(placeholder);
+            }
+            
+            tr.appendChild(avatarCell);
+            
+            tr.innerHTML += `<td>${p.name}</td>
+                <td>${p.type}</td>
+                <td>${valorJogador}</td>
+                <td><input type="checkbox" ${p.paid ? 'checked' : ''} id="paid-${idx}" /></td>
+                <td><input type="checkbox" ${p.confirmed ? 'checked' : ''} id="confirmed-${idx}" /></td>
+                <td>
+                    <button class="btn-small" data-action="edit" data-index="${idx}">✏️</button>
+                    <button class="btn-small btn-danger" data-action="delete" data-index="${idx}">🗑️</button>
+                </td>`;
+            tbody.appendChild(tr);
+
+            tr.querySelector(`#paid-${idx}`).addEventListener('change', (e)=>{
+                p.paid = e.target.checked;
+                setPendingChanges(true);
+                updateAllDisplays();
+                saveLocalCache();
+            });
+            tr.querySelector(`#confirmed-${idx}`).addEventListener('change', (e)=>{
+                p.confirmed = e.target.checked;
+                setPendingChanges(true);
+                updateAllDisplays();
+                saveLocalCache();
+            });
+            tr.querySelector('button[data-action="delete"]').addEventListener('click', ()=>{
+                if (confirm('Deseja excluir este jogador localmente?')) {
+                    players.splice(players.indexOf(p),1);
+                    setPendingChanges(true);
+                    updateAllDisplays();
+                    saveLocalCache();
+                }
+            });
+            tr.querySelector('button[data-action="edit"]').addEventListener('click', ()=>{
+                editPlayer(p);
+            });
+        });
+    }
+
+    function addPlayer() {
+        const name = document.getElementById('playerName').value.trim();
+        const type = document.getElementById('playerType').value;
+        const currentMonth = monthFilter.value;
+        if (!name) { showMessage('Insira um nome', 'error'); return; }
+        const newPlayer = { 
+            name, 
+            type, 
+            paid:false, 
+            confirmed:false, 
+            month: currentMonth,
+            avatar: currentAvatarData || null
+        };
+        players.push(newPlayer);
+        setPendingChanges(true);
+        updateAllDisplays();
+        saveLocalCache();
+        document.getElementById('playerName').value = '';
+        resetAvatarInput();
+        showMessage('Jogador adicionado (alteração local). Use "Salvar no servidor" para persistir.', 'success');
+    }
+
+    function editPlayer(player) {
+        const newName = prompt('Editar nome do jogador:', player.name);
+        if (newName === null || newName.trim() === '') return;
+        player.name = newName.trim();
+        
+        const newType = prompt('Editar tipo (Mensalista/Avulso):', player.type);
+        if (newType && (newType === 'Mensalista' || newType === 'Avulso')) {
+            player.type = newType;
+        }
+        
+        const newAvatar = confirm('Deseja alterar a foto do jogador?');
+        if (newAvatar) {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        player.avatar = e.target.result;
+                        setPendingChanges(true);
+                        updateAllDisplays();
+                        saveLocalCache();
+                        showMessage('Foto do jogador atualizada.', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
             };
-
-            players.push(newPlayer);
-            saveData();
-            updateDashboard();
-            updatePlayersTable();
-            updateFinancialReport();
-            updateCaixaInfo();
-
-            // Reset form
-            nameInput.value = '';
-            typeSelect.value = 'Mensalista';
-
-            showMessage('Jogador adicionado com sucesso!', 'success');
+            fileInput.click();
         }
+        
+        setPendingChanges(true);
+        updateAllDisplays();
+        saveLocalCache();
+        showMessage('Jogador atualizado.', 'success');
+    }
 
-        function deletePlayer(index) {
-            if (confirm('Tem certeza que deseja excluir este jogador?')) {
-                players.splice(index, 1);
-                saveData();
-                updateDashboard();
-                updatePlayersTable();
-                updateFinancialReport();
-                updateCaixaInfo();
-                showMessage('Jogador excluído com sucesso!', 'success');
-            }
-        }
+    /* -------------------------
+       Items table and actions
+       ------------------------- */
+    function updateItemsTable() {
+        const tbody = document.getElementById('itemsTableBody');
+        tbody.innerHTML = '';
+        items.forEach((it, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${it.name}</td>
+                <td>R$ ${parseFloat(it.value).toFixed(2).replace('.',',')}</td>
+                <td>${it.status}</td>
+                <td>
+                    <button class="btn-small" data-action="toggle" data-index="${idx}">${it.status==='Comprado' ? '↶ Marcar A comprar' : '✓ Marcar Comprado'}</button>
+                    <button class="btn-small btn-danger" data-action="delete" data-index="${idx}">🗑️ Excluir</button>
+                </td>`;
+            tbody.appendChild(tr);
 
-        function resetPayments() {
-            const currentMonth = monthFilter.value;
-            
-            if (confirm('Tem certeza que deseja resetar todos os pagamentos deste mês? Esta ação não pode ser desfeita.')) {
-                players.forEach(player => {
-                    if (player.month === currentMonth || !player.month) {
-                        player.paid = false;
-                    }
-                });
-                saveData();
-                updateDashboard();
-                updatePlayersTable();
-                updateFinancialReport();
-                updateCaixaInfo();
-                showMessage('Pagamentos resetados com sucesso!', 'success');
-            }
-        }
+            tr.querySelector('button[data-action="toggle"]').addEventListener('click', ()=>{
+                const oldStatus = it.status;
+                it.status = (it.status==='Comprado') ? 'A comprar' : 'Comprado';
+                // If changing to Comprado, deduct value from dinheiro em caixa via pending logic
+                setPendingChanges(true);
+                updateAllDisplays();
+                saveLocalCache();
+                showMessage(`Item marcado como "${it.status}" (alteração local). Salve no servidor para confirmar.`, 'success');
+            });
 
-        function addItem() {
-            const nameInput = document.getElementById('itemName');
-            const valueInput = document.getElementById('itemValue');
-            const statusSelect = document.getElementById('itemStatus');
-
-            const name = nameInput.value.trim();
-            const value = parseFloat(valueInput.value);
-            const status = statusSelect.value;
-
-            if (!name) {
-                showMessage('Por favor, insira um nome para o item.', 'error');
-                return;
-            }
-
-            if (isNaN(value) || value <= 0) {
-                showMessage('Por favor, insira um valor válido para o item.', 'error');
-                return;
-            }
-
-            const newItem = {
-                name: name,
-                value: value,
-                status: status
-            };
-
-            items.push(newItem);
-            saveData();
-            updateItemsTable();
-            updateCaixaInfo();
-
-            // Reset form
-            nameInput.value = '';
-            valueInput.value = '';
-            statusSelect.value = 'A comprar';
-
-            showMessage('Item adicionado com sucesso!', 'success');
-        }
-
-        function editItem(index) {
-            const item = items[index];
-            
-            const newName = prompt('Editar nome do item:', item.name);
-            if (newName === null) return;
-            
-            const newValue = prompt('Editar valor do item:', item.value);
-            if (newValue === null) return;
-            
-            const newStatus = prompt('Editar status (A comprar/Comprado):', item.status);
-            if (newStatus === null) return;
-
-            if (newName && newValue && newStatus) {
-                items[index].name = newName;
-                items[index].value = parseFloat(newValue);
-                items[index].status = newStatus;
-                
-                saveData();
-                updateItemsTable();
-                updateCaixaInfo();
-                showMessage('Item atualizado com sucesso!', 'success');
-            }
-        }
-
-        function deleteItem(index) {
-            if (confirm('Tem certeza que deseja excluir este item?')) {
-                items.splice(index, 1);
-                saveData();
-                updateItemsTable();
-                updateCaixaInfo();
-                showMessage('Item excluído com sucesso!', 'success');
-            }
-        }
-
-        function showMessage(message, type) {
-            // Remove existing messages
-            const existingMessages = document.querySelectorAll('.message');
-            existingMessages.forEach(msg => msg.remove());
-
-            // Create new message
-            const messageEl = document.createElement('div');
-            messageEl.className = `message message-${type}`;
-            messageEl.textContent = message;
-
-            // Insert message at the top of the main content
-            const mainContent = document.querySelector('.main-content .container');
-            mainContent.insertBefore(messageEl, mainContent.firstChild);
-
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                if (messageEl.parentNode) {
-                    messageEl.remove();
+            tr.querySelector('button[data-action="delete"]').addEventListener('click', ()=>{
+                if (confirm('Deseja excluir este item localmente?')) {
+                    items.splice(items.indexOf(it),1);
+                    setPendingChanges(true);
+                    updateAllDisplays();
+                    saveLocalCache();
                 }
-            }, 5000);
-        }
+            });
+        });
+    }
 
-        // Make functions available globally for onclick handlers
-        window.deletePlayer = deletePlayer;
-        window.editItem = editItem;
-        window.deleteItem = deleteItem;
+    function addItem() {
+        const name = document.getElementById('itemName').value.trim();
+        const value = parseFloat(document.getElementById('itemValue').value);
+        const status = document.getElementById('itemStatus').value;
+        if (!name || isNaN(value) || value<=0) { showMessage('Nome e valor válidos são obrigatórios', 'error'); return; }
+        items.push({ name, value, status });
+        setPendingChanges(true);
+        updateAllDisplays();
+        saveLocalCache();
+        document.getElementById('itemName').value=''; document.getElementById('itemValue').value='';
+        showMessage('Item adicionado (alteração local). Salve no servidor para persistir.', 'success');
+    }
+
+    /* -------------------------
+       Edit quadra info (uses prompts but marks pending)
+       ------------------------- */
+    function editQuadraInfo() {
+        const novoLocal = prompt('Local da quadra:', quadraInfo.local);
+        if (novoLocal === null) return;
+        const novoValor = prompt('Valor da reserva (R$):', quadraInfo.valor);
+        if (novoValor === null) return;
+        const novaDuracao = prompt('Duração:', quadraInfo.duracao);
+        if (novaDuracao === null) return;
+        const novoValorAvulso = prompt('Valor para avulsos (R$):', quadraInfo.valorAvulso);
+        if (novoValorAvulso === null) return;
+        const novoValorMensalista = prompt('Valor para mensalistas (R$):', quadraInfo.valorMensalista);
+        if (novoValorMensalista === null) return;
+        quadraInfo.local = novoLocal;
+        quadraInfo.valor = parseFloat(novoValor);
+        quadraInfo.duracao = novaDuracao;
+        quadraInfo.valorAvulso = parseFloat(novoValorAvulso);
+        quadraInfo.valorMensalista = parseFloat(novoValorMensalista);
+        valorMensalistaInput.value = quadraInfo.valorMensalista;
+        setPendingChanges(true);
+        updateAllDisplays();
+        saveLocalCache();
+        showMessage('Informações da quadra atualizadas localmente. Salve no servidor para persistir.', 'success');
+    }
+
+    /* -------------------------
+       Utility: show messages
+       ------------------------- */
+    function showMessage(msg, type='success') {
+        const main = document.querySelector('.main-content .container');
+        const existing = main.querySelector('.message');
+        if (existing) existing.remove();
+        const div = document.createElement('div');
+        div.className = `message message-${type}`;
+        div.textContent = msg;
+        main.insertBefore(div, main.firstChild);
+        setTimeout(()=>{ if (div.parentNode) div.remove(); }, 5000);
+    }
+
+    /* -------------------------
+       Save and sync controls (exposed)
+       ------------------------- */
+    // Expose saveData globally so banner can call it
+    window.saveData = saveData;
+    window.loadData = loadData;
+
+    /* -------------------------
+       Local cache auto-save before unload
+       ------------------------- */
+    window.addEventListener('beforeunload', () => {
+        saveLocalCache();
+    });
+
+    /* -------------------------
+       Helpers to show/hide app/login
+       ------------------------- */
+    function handleLogin() {
+        const u = document.getElementById('username').value;
+        const p = document.getElementById('password').value;
+        if (u===ADMIN_USERNAME && p===ADMIN_PASSWORD) {
+            localStorage.setItem('isLoggedIn','true');
+            showApp();
+            loadData({initial:true});
+            showMessage('Login realizado com sucesso','success');
+        } else {
+            showMessage('Usuário ou senha incorretos','error');
+        }
+    }
+    function handleLogout() {
+        localStorage.removeItem('isLoggedIn');
+        showLogin();
+    }
+    function showLogin() { loginScreen.style.display='flex'; appContainer.style.display='none'; }
+    function showApp() { loginScreen.style.display='none'; appContainer.style.display='block'; }
+
+    /* -------------------------
+       Initial UI helpers
+       ------------------------- */
+    function showSection(id) {
+        sections.forEach(s=>s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    /* -------------------------
+       Expose some functions globally for debugging if needed
+       ------------------------- */
+    window.setPendingChanges = setPendingChanges;
+
     </script>
 </body>
 </html>
